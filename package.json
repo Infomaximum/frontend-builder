@@ -1,11 +1,8 @@
 {
-  "name": "@im/builder",
+  "name": "@infomaximum/builder",
   "version": "1.0.2",
   "license": "Apache-2.0",
-  "author": {
-    "name": "Infomaximum Frontend Team",
-    "url": "https://infomaximum.com"
-  },
+  "author": "Infomaximum Frontend Team (https://infomaximum.com)",
   "bin": {
     "im-builder": "dist/bin/builder.js"
   },
@@ -93,5 +90,21 @@
     "rimraf": "4.4.0",
     "shx": "0.3.4",
     "typescript": "5.0.2"
-  }
+  },
+  "description": "Сборщик frontend приложения",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Infomaximum/frontend-builder.git"
+  },
+  "keywords": [
+    "builder",
+    "frontend",
+    "webpack",
+    "builder react app",
+    "builder cli"
+  ],
+  "bugs": {
+    "url": "https://github.com/Infomaximum/frontend-builder/issues"
+  },
+  "homepage": "https://github.com/Infomaximum/frontend-builder#readme"
 }
