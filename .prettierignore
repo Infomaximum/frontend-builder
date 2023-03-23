@@ -1,0 +1,15 @@
+node_modules/
+*.svg
+*.ttf
+*.pug
+*.ico
+*.png
+_release
+.gitignore
+.gitkeep
+.npmrc
+.yarnrc
+.env
+.rpt2_cache/
+yarn-error.log
+tsconfig.tsbuildinfo
