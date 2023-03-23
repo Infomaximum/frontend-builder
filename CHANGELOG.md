@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 1.0.3 (2023-03-23)
+
+
+### Bug Fixes
+
+* исправлено описание библиотеки ([291b275](https://github.com/Infomaximum/frontend-builder/commit/291b27529f1a0b7d8c1a6732b4e27ed0e8801f88))
+
 ### [1.0.2](https://git.office.infomaximum.com:10122/frontend/im-builder/compare/v1.0.1...v1.0.2) (2023-03-23)
 
 

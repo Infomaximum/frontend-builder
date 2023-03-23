@@ -1,6 +1,6 @@
 {
   "name": "@infomaximum/builder",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "license": "Apache-2.0",
   "author": "Infomaximum Frontend Team (https://infomaximum.com)",
   "bin": {
