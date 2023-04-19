@@ -24,7 +24,7 @@ export const getCommonConfig = async (mode: TMode, PATHS: TPaths, isHot?: boolea
     {
       context: PATHS.appPath,
       mode: mode,
-      entry: [PATHS.moduleIndex],
+      entry: [require.resolve("core-js"), PATHS.moduleIndex],
       output: {
         path: PATHS.appRelease,
         publicPath: PATHS.publicPath,
