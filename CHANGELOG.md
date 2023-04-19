@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/Infomaximum/frontend-builder/compare/v1.0.3...v1.1.0) (2023-04-19)
+
+
+### Features
+
+* добавлен badge ([183b985](https://github.com/Infomaximum/frontend-builder/commit/183b98506f36bf66361d13544f2566ed9e05d9b2))
+
+
+### Bug Fixes
+
+* исправлена проблема с отсутствием core-js ([7d91bf2](https://github.com/Infomaximum/frontend-builder/commit/7d91bf20014c2e0e9286215437e589d451dd2255))
+
 ### 1.0.3 (2023-03-23)
 
 
