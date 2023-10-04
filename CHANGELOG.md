@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.1](https://github.com/Infomaximum/frontend-builder/compare/v1.1.0...v1.1.1) (2023-10-04)
+
+
+### Bug Fixes
+
+* cacheGroups node_modules ([26a10a4](https://github.com/Infomaximum/frontend-builder/commit/26a10a425e6dee15e7b24b41d77e3427898bb10c))
+
 ## [1.1.0](https://github.com/Infomaximum/frontend-builder/compare/v1.0.3...v1.1.0) (2023-04-19)
 
 
