@@ -1,4 +1,3 @@
-import CompressionPlugin from "compression-webpack-plugin";
 import TerserWebpackPlugin from "terser-webpack-plugin";
 import type { MinifyOptions as TerserOptions } from "terser";
 import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
@@ -27,16 +26,4 @@ export const minimizerConfig = {
       new CssMinimizerPlugin({}),
     ],
   },
-  plugins: [
-    // отключил, так как не используется
-    // new CompressionPlugin({
-    //   filename: "[path][base].gz",
-    //   algorithm: "gzip",
-    //   test: /\.(js|css|html|svg)$/,
-    //   compressionOptions: { level: 9 },
-    //   threshold: 10240,
-    //   minRatio: 0.8,
-    //   deleteOriginalAssets: false,
-    // }),
-  ],
 } as webpack.Configuration;

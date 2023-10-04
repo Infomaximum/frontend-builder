@@ -36,7 +36,6 @@
     "chalk": "4.1.2",
     "circular-dependency-plugin": "5.2.2",
     "commander": "6.2.1",
-    "compression-webpack-plugin": "10.0.0",
     "convict": "6.2.4",
     "copy-webpack-plugin": "10.2.4",
     "core-js": "3.29.1",
@@ -72,7 +71,6 @@
   },
   "devDependencies": {
     "@types/circular-dependency-plugin": "5.0.5",
-    "@types/compression-webpack-plugin": "9.1.1",
     "@types/convict": "6.1.1",
     "@types/copy-webpack-plugin": "10.1.0",
     "@types/css-minimizer-webpack-plugin": "3.2.1",
