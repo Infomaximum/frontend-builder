@@ -9,11 +9,10 @@ export const minimizerConfig = {
     minimize: true,
     splitChunks: {
       chunks: "all",
-      maxSize: 1024 * 244,
       cacheGroups: {
         defaultVendors: {
           test: /[\\/]node_modules[\\/]/,
-          name: "node_modules",
+          name: "modules",
         },
       },
     },
