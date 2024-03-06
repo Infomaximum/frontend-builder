@@ -85,7 +85,7 @@ export const getCommonConfig = async (mode: TMode, PATHS: TPaths, isHot?: boolea
         ],
       },
       plugins: [
-        new WebpackBar({ profile: true }),
+        new WebpackBar({ profile: false }),
         new RemovePlugin({
           // всегда очищает только перед первой сборкой
           before: {
