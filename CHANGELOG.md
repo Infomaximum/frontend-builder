@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/Infomaximum/frontend-builder/compare/v1.1.1...v1.2.0) (2024-03-06)
+
+
+### Features
+
+* добавлено проксирование с /saml_auth ([97c2ba6](https://github.com/Infomaximum/frontend-builder/commit/97c2ba6679d3e90f0c9272aec8bdcc1a4f3a0f70))
+
 ### [1.1.1](https://github.com/Infomaximum/frontend-builder/compare/v1.1.0...v1.1.1) (2023-10-04)
 
 
