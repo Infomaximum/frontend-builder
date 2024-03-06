@@ -53,7 +53,7 @@ export const getDevServerConfig = ({
     },
     proxy: [
       {
-        context: ["/graphiql", "/static", "/graphql", "/ad_auth", "/docs"],
+        context: ["/graphiql", "/static", "/graphql", "/ad_auth", "/saml_auth", "/docs"],
         target: `http${protocol}://${proxyHost}:${proxyPort}`,
         secure: !!protocol,
         changeOrigin: true,
