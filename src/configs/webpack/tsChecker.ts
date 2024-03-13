@@ -6,7 +6,7 @@ export const tsChecker = {
     new ForkTsCheckerWebpackPlugin({
       async: true,
       typescript: {
-        memoryLimit: 2048,
+        memoryLimit: 4096,
         diagnosticOptions: {
           semantic: true,
           syntactic: true,
