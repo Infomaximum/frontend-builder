@@ -38,8 +38,10 @@ const run = async (PATHS: TPaths, options: TStartOptions) => {
 
   const isHot = options.hot;
 
+  const dynamicEntries = { entries: [] };
+
   const configWebpack = [
-    await getCommonConfig(mode, PATHS, isHot),
+    await getCommonConfig(mode, PATHS, isHot, dynamicEntries),
     getLoaders(mode, PATHS),
     getHTMLConfig(mode, PATHS),
     options.analyze ? getBundleAnalyzerConfig() : {},
@@ -60,6 +62,7 @@ const run = async (PATHS: TPaths, options: TStartOptions) => {
     writeToDisk: options.write,
     isHttps: options.https,
     hot: isHot,
+    dynamicEntries,
   });
 
   const devServer = new WebpackDevServer(devServerConfig, compiler);

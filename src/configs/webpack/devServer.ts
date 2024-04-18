@@ -15,6 +15,7 @@ type TDevServerConfigParams = {
   isHttps: boolean;
   PATHS: TPaths;
   hot: boolean;
+  dynamicEntries: { entries: string[] };
 };
 
 export const getDevServerConfig = ({
@@ -27,6 +28,7 @@ export const getDevServerConfig = ({
   isHttps,
   PATHS,
   hot,
+  dynamicEntries,
 }: TDevServerConfigParams): WebpackDevServer.Configuration => {
   const protocol = isHttps ? "s" : "";
   return {
@@ -96,6 +98,28 @@ export const getDevServerConfig = ({
           res.setHeader("Access-Control-Allow-Origin", "*");
           res.sendFile(path.resolve(PATHS.assetsPath, "generator.html"));
         });
+
+        devServer.app?.get("/tech/modules", async (req, res) => {
+          const modules = await fs.readdir(PATHS.appPackages);
+
+          res.status(200).send(modules);
+        });
+
+        devServer.app?.get("/tech/init-modules", async (req, res) => {
+          const modulesStr = (req.query as any)?.modules;
+
+          const modules = modulesStr?.split(",");
+
+          dynamicEntries.entries = (
+            Array.isArray(modules)
+              ? modules.map((m: string) => path.join(PATHS.appPackages, m))
+              : []
+          ).filter(Boolean);
+
+          devServer.invalidate();
+
+          res.status(200).send(modules);
+        });
       }
 
       devServer.app?.use(
@@ -119,7 +143,7 @@ export const getDevServerConfig = ({
               port: proxyPort,
             },
           ],
-        })
+        }),
       );
 
       return middlewares;
