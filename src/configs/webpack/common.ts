@@ -9,7 +9,12 @@ import type webpack from "webpack";
 import { getVersionPackages, getHashLastCommit, getCurrentBranchOrTagName } from "./utils/utils";
 import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 import ReactRefreshTypeScript from "react-refresh-typescript";
-export const getCommonConfig = async (mode: TMode, PATHS: TPaths, isHot?: boolean) => {
+export const getCommonConfig = async (
+  mode: TMode,
+  PATHS: TPaths,
+  isHot?: boolean,
+  dynamicEntries: { entries: string[] } = { entries: [] },
+) => {
   const isDev = mode === "development";
   const isProd = mode === "production";
   const isHMR = isHot && isDev;
@@ -24,7 +29,7 @@ export const getCommonConfig = async (mode: TMode, PATHS: TPaths, isHot?: boolea
     {
       context: PATHS.appPath,
       mode: mode,
-      entry: [require.resolve("core-js"), PATHS.moduleIndex],
+      entry: () => [require.resolve("core-js"), PATHS.moduleIndex, ...dynamicEntries.entries],
       output: {
         path: PATHS.appRelease,
         publicPath: PATHS.publicPath,
