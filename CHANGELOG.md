@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/Infomaximum/frontend-builder/compare/v1.2.1...v1.3.0) (2024-05-29)
+
+
+### Features
+
+* добавлена возможность проксирования запросов без указания порта ([955280a](https://github.com/Infomaximum/frontend-builder/commit/955280aa02f1eb6b20a0beb0068d7bd87e9938d4))
+
 ### [1.2.1](https://github.com/Infomaximum/frontend-builder/compare/v1.2.0...v1.2.1) (2024-03-13)
 
 
