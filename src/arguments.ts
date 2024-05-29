@@ -5,7 +5,7 @@ import { runDevServer } from "./scripts/start";
 
 export type TStartOptions = {
   analyze: boolean;
-  proxy_port: string;
+  proxy_port: string | undefined;
   proxy_ip: string;
   entry_path?: string;
   overlay: boolean;
@@ -33,7 +33,7 @@ export const registerCommands = (cli: commander.Command) => {
     .description("Запускает сборку проекта")
     .option(
       "-o, --output_path <path>",
-      "Путь куда будет собран билд, по умолчанию папка откуда  выполняется команда"
+      "Путь куда будет собран билд, по умолчанию папка откуда  выполняется команда",
     )
     .option("-a, --analyze", "Генерирует файл с размерами пакетов в бандле", false)
     .option("--c, --config <path>", "Использовать конфиг для сборки")
@@ -45,7 +45,7 @@ export const registerCommands = (cli: commander.Command) => {
     .command("start")
     .description("Запускает проект в dev режиме")
     .option("-ph, --proxy_ip <ip>", "IP для проксирования запросов", "localhost")
-    .option("-pp, --proxy_port <port>", "Порт для проксирования запросов", "8091")
+    .option("-pp, --proxy_port <port>", "Порт для проксирования запросов")
     .option("-s, --https", "Проксирование на https/wss хост", false)
     .option("-a, --analyze", "Генерирует файл с размерами пакетов в бандле", false)
     .option("-e, --entry_path <path>", "Путь до входной точки приложения")

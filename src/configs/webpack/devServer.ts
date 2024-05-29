@@ -9,7 +9,7 @@ type TDevServerConfigParams = {
   appPath: string;
   port: number;
   host: string;
-  proxyPort: string;
+  proxyPort: string | undefined;
   proxyHost: string;
   writeToDisk: boolean;
   isHttps: boolean;
@@ -28,7 +28,10 @@ export const getDevServerConfig = ({
   PATHS,
   hot,
 }: TDevServerConfigParams): WebpackDevServer.Configuration => {
-  const protocol = isHttps ? "s" : "";
+  const secure = isHttps ? "s" : "";
+
+  const target = `${secure}://${proxyHost}${proxyPort ? `:${proxyPort}` : ""}`;
+
   return {
     port,
     host,
@@ -53,17 +56,17 @@ export const getDevServerConfig = ({
     },
     proxy: [
       {
-        context: ["/graphiql", "/static", "/graphql", "/ad_auth", "/saml_auth", "/docs"],
-        target: `http${protocol}://${proxyHost}:${proxyPort}`,
-        secure: !!protocol,
+        context: ["/graphiql", "/static", "/graphql", "/ad_auth", "/saml_auth"],
+        target: `http${target}`,
+        secure: !!secure,
         changeOrigin: true,
       },
       {
         context: ["/ws"],
-        target: `ws${protocol}://${proxyHost}:${proxyPort}`,
+        target: `ws${target}`,
         ws: true,
         logLevel: "silent",
-        secure: !!protocol,
+        secure: !!secure,
         changeOrigin: true,
       },
     ],
@@ -111,15 +114,17 @@ export const getDevServerConfig = ({
             rps: false,
             statusCodes: false,
           },
-          healthChecks: [
-            {
-              protocol: `http${protocol}`,
-              path: `/graphql?query={server{status}}`,
-              host: proxyHost,
-              port: proxyPort,
-            },
-          ],
-        })
+          healthChecks: proxyPort
+            ? [
+                {
+                  protocol: `http${secure}`,
+                  path: `/graphql?query={server{status}}`,
+                  host: proxyHost,
+                  port: proxyPort,
+                },
+              ]
+            : undefined,
+        }),
       );
 
       return middlewares;
