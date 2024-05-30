@@ -30,20 +30,13 @@ export const getCommonConfig = async (mode: TMode, PATHS: TPaths, isHot?: boolea
         publicPath: PATHS.publicPath,
         filename: name,
         chunkFilename: name,
-        hashFunction: "xxhash64", // ускорение пересборки https://github.com/webpack/webpack/issues/12102#issuecomment-938544497
         webassemblyModuleFilename: `${PATHS.wasmPath}/${Math.random()}.wasm`,
       },
       experiments: {
         asyncWebAssembly: true,
         syncWebAssembly: true,
         backCompat: false, //убираем слой обратной совместимости с webpack 4 https://github.com/webpack/webpack/issues/14580
-        /* 
-        todo: ускорение пересборки https://github.com/webpack/webpack/issues/12102#issuecomment-938544497
-        лучше включить эту опцию вместо hashFunction и cacheUnaffected, но в данный момент появляются ошибки
-        смешанных импортов значений и типов, после перехода на typescript 4.5 вернуться к этому
-        */
-        //futureDefaults: true,
-        cacheUnaffected: true, //ускорение пересборки https://github.com/webpack/webpack/issues/12102#issuecomment-938544497
+        futureDefaults: true,
       },
       cache: {
         type: "memory",
