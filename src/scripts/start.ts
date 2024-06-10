@@ -32,7 +32,15 @@ export const runDevServer = async (options: TStartOptions) => {
 
 const run = async (PATHS: TPaths, options: TStartOptions) => {
   const { defaultDevServerPort, devServerHost, appPath } = PATHS;
-  const port = (await choosePort(devServerHost, defaultDevServerPort)) ?? defaultDevServerPort;
+  let port = defaultDevServerPort;
+
+  try {
+    port = (await choosePort(devServerHost, defaultDevServerPort)) ?? defaultDevServerPort;
+  } catch (e) {
+    console.error(chalk.red(e));
+
+    process.exit(1);
+  }
 
   const mode: TMode = "development";
 
