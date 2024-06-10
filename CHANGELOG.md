@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/Infomaximum/frontend-builder/compare/v1.4.0...v1.5.0) (2024-06-10)
+
+
+### Features
+
+* увеличен лимит памяти ForkTsCheckerWebpackPlugin ([7f0945d](https://github.com/Infomaximum/frontend-builder/commit/7f0945d8f11596d675c13626c1d807e61a2de7f5))
+
+
+### Bug Fixes
+
+* останавливается выполнение программы при ошибке выборе порта ([2d912c8](https://github.com/Infomaximum/frontend-builder/commit/2d912c883a500136fb613d5557ea021452c657ef))
+
 ## [1.4.0](https://github.com/Infomaximum/frontend-builder/compare/v1.3.0...v1.4.0) (2024-05-30)
 
 
