@@ -28,7 +28,7 @@ export type TBuildOptions = {
 
 export const registerCommands = (cli: commander.Command) => {
   cli.helpOption("-h", "Отображает помощь по командам");
-  cli.name("@im/cli");
+  cli.name(packageJson.name);
   cli.version(packageJson.version, "-v, --version", "Текущая версия библиотеки");
 
   cli
