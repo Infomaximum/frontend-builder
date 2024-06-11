@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.7.0](https://github.com/Infomaximum/frontend-builder/compare/v1.6.1...v1.7.0) (2024-06-11)
+
+
+### Features
+
+* добавлены варианты значений в опцию cache ([b65c7b5](https://github.com/Infomaximum/frontend-builder/commit/b65c7b55865a7a3c635a714261725d581fa4f19e))
+
 ### [1.6.1](https://github.com/Infomaximum/frontend-builder/compare/v1.6.0...v1.6.1) (2024-06-11)
 
 
