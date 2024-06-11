@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.6.1](https://github.com/Infomaximum/frontend-builder/compare/v1.6.0...v1.6.1) (2024-06-11)
+
+
+### Bug Fixes
+
+* исправлено имя библиотеки ([334750e](https://github.com/Infomaximum/frontend-builder/commit/334750e0fb97a17741dab259efc4745d4c7724b8))
+
 ## [1.6.0](https://github.com/Infomaximum/frontend-builder/compare/v1.5.0...v1.6.0) (2024-06-11)
 
 
