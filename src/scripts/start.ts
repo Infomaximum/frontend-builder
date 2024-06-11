@@ -13,6 +13,8 @@ import { tsChecker } from "../configs/webpack/tsChecker";
 import type { TStartOptions } from "../arguments";
 import { getBundleAnalyzerConfig } from "../configs/webpack/bundleAnalyzer";
 import { circularDependencyDetector } from "../configs/webpack/circularDep";
+import { getWebpackCacheConfig } from "../configs/webpack/cache";
+
 export const runDevServer = async (options: TStartOptions) => {
   const PATHS = generatePaths({
     entryPath: options.entry_path,
@@ -48,6 +50,7 @@ const run = async (PATHS: TPaths, options: TStartOptions) => {
 
   const configWebpack = [
     await getCommonConfig(mode, PATHS, isHot),
+    getWebpackCacheConfig(options.cache),
     getLoaders(mode, PATHS),
     getHTMLConfig(mode, PATHS),
     options.analyze ? getBundleAnalyzerConfig() : {},

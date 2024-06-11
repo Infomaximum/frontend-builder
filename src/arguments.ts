@@ -3,6 +3,8 @@ import packageJson from "../package.json";
 import { runBuild } from "./scripts/build";
 import { runDevServer } from "./scripts/start";
 
+export type TWebpackCacheType = "fs" | "memory";
+
 export type TStartOptions = {
   analyze: boolean;
   proxy_port: string | undefined;
@@ -13,6 +15,7 @@ export type TStartOptions = {
   write: boolean;
   https: boolean;
   hot: boolean;
+  cache: TWebpackCacheType;
 };
 
 export type TBuildOptions = {
@@ -54,5 +57,10 @@ export const registerCommands = (cli: commander.Command) => {
     //.option("-o, --overlay", "Включает поддержку overlay с отображением ошибок в браузере", false)
     .option("-w, --write", "Записывает выходные данные на диск вместо оперативной памяти", false)
     .option("--hot", "Включает режим HMR", false)
+    .option(
+      "--cache <cache type>",
+      "Используемый тип кеша webpack",
+      "memory" satisfies TWebpackCacheType,
+    )
     .action((options: TStartOptions) => runDevServer(options));
 };

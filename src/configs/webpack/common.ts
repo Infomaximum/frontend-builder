@@ -9,6 +9,7 @@ import type webpack from "webpack";
 import { getVersionPackages, getHashLastCommit, getCurrentBranchOrTagName } from "./utils/utils";
 import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 import ReactRefreshTypeScript from "react-refresh-typescript";
+
 export const getCommonConfig = async (mode: TMode, PATHS: TPaths, isHot?: boolean) => {
   const isDev = mode === "development";
   const isProd = mode === "production";
@@ -44,10 +45,6 @@ export const getCommonConfig = async (mode: TMode, PATHS: TPaths, isHot?: boolea
         */
         //futureDefaults: true,
         cacheUnaffected: true, //ускорение пересборки https://github.com/webpack/webpack/issues/12102#issuecomment-938544497
-      },
-      cache: {
-        type: "memory",
-        maxGenerations: 5,
       },
       resolve: {
         extensions: [".ts", ".tsx", ".js", ".jsx"],
