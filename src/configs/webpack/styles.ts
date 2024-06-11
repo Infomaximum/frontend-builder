@@ -50,12 +50,13 @@ export const getStylesConfig = (mode: TMode, PATHS: TPaths) => {
       ],
     },
     plugins: [
-      new MiniCssExtractPlugin({
-        filename: `${PATHS.staticPath}/css/${isProd ? "[name].[contenthash]" : "[name]"}.css`,
-        chunkFilename: `${PATHS.staticPath}/css/${isProd ? "[id].[contenthash]" : "[id]"}.css`,
-        ignoreOrder: true,
-        experimentalUseImportModule: true,
-      }),
-    ],
+      isProd &&
+        new MiniCssExtractPlugin({
+          filename: `${PATHS.staticPath}/css/[name].[contenthash].css`,
+          chunkFilename: `${PATHS.staticPath}/css/[id].[contenthash].css`,
+          ignoreOrder: true,
+          experimentalUseImportModule: true,
+        }),
+    ].filter(Boolean),
   };
 };
