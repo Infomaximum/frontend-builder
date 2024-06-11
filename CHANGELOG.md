@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0](https://github.com/Infomaximum/frontend-builder/compare/v1.5.0...v1.6.0) (2024-06-11)
+
+
+### Features
+
+* добавлена возможность указать тип кеша webpack ([e43ecb8](https://github.com/Infomaximum/frontend-builder/commit/e43ecb8b15f04692cadfc1ed3516e852800bef7f))
+
+
+### Bug Fixes
+
+* MiniCssExtractPlugin только при сборке в прод (исправлена утечка памяти) ([eaf2bb5](https://github.com/Infomaximum/frontend-builder/commit/eaf2bb541b0349c7993c9ddc099bdeddef078f33))
+
 ## [1.5.0](https://github.com/Infomaximum/frontend-builder/compare/v1.4.0...v1.5.0) (2024-06-10)
 
 
