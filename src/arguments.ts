@@ -2,6 +2,7 @@ import type commander from "commander";
 import packageJson from "../package.json";
 import { runBuild } from "./scripts/build";
 import { runDevServer } from "./scripts/start";
+import { Option } from "commander";
 
 export type TWebpackCacheType = "fs" | "memory";
 
@@ -57,10 +58,10 @@ export const registerCommands = (cli: commander.Command) => {
     //.option("-o, --overlay", "Включает поддержку overlay с отображением ошибок в браузере", false)
     .option("-w, --write", "Записывает выходные данные на диск вместо оперативной памяти", false)
     .option("--hot", "Включает режим HMR", false)
-    .option(
-      "--cache <cache type>",
-      "Используемый тип кеша webpack",
-      "memory" satisfies TWebpackCacheType,
+    .addOption(
+      new Option("--cache <cache type>", "Используемый тип кеша webpack")
+        .default("memory" satisfies TWebpackCacheType)
+        .choices(["fs", "memory"] satisfies TWebpackCacheType[]),
     )
     .action((options: TStartOptions) => runDevServer(options));
 };
