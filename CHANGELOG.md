@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.8.0](https://github.com/Infomaximum/frontend-builder/compare/v1.7.0...v1.8.0) (2024-06-12)
+
+
+### Features
+
+* добавлен url для снятия снапшотов кучи ([d703c29](https://github.com/Infomaximum/frontend-builder/commit/d703c296e306c918c57a8d1e237f89a53e7854f0))
+
 ## [1.7.0](https://github.com/Infomaximum/frontend-builder/compare/v1.6.1...v1.7.0) (2024-06-11)
 
 
