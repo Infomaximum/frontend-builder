@@ -99,6 +99,11 @@ export const getDevServerConfig = ({
           res.setHeader("Access-Control-Allow-Origin", "*");
           res.sendFile(path.resolve(PATHS.assetsPath, "generator.html"));
         });
+
+        devServer.app?.get("/heap", (req, res) => {
+          require("v8").writeHeapSnapshot();
+          res.send("ok");
+        });
       }
 
       devServer.app?.use(
