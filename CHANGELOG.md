@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.1](https://github.com/Infomaximum/frontend-builder/compare/v1.8.0...v1.8.1) (2024-06-12)
+
+
+### Bug Fixes
+
+* maxGenerations -> 1 ([b231e59](https://github.com/Infomaximum/frontend-builder/commit/b231e5981a5526c7ac5a7d9d93b14f9898d94e25))
+
 ## [1.8.0](https://github.com/Infomaximum/frontend-builder/compare/v1.7.0...v1.8.0) (2024-06-12)
 
 
