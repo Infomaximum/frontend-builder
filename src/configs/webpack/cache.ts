@@ -14,7 +14,7 @@ export const getWebpackCacheConfig = (cacheType: TWebpackCacheType): webpack.Con
   } else {
     cache = {
       type: "memory",
-      maxGenerations: 3,
+      maxGenerations: 1,
     };
   }
 
