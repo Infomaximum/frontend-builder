@@ -17,7 +17,12 @@ export const getCommonConfig = async (mode: TMode, PATHS: TPaths, isHot?: boolea
 
   const name = `${PATHS.staticPath}/js/${isProd ? "[name].[contenthash]" : "[name]"}.js`;
 
-  const hash = await getHashLastCommit(PATHS);
+  let hash: string = "";
+
+  try {
+    hash = (await getHashLastCommit(PATHS)) || "";
+  } catch (error) {}
+
   const versions = await getVersionPackages(PATHS);
   const branchName = await getCurrentBranchOrTagName(PATHS);
 
