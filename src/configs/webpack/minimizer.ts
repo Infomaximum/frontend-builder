@@ -6,18 +6,6 @@ import type webpack from "webpack";
 export const minimizerConfig = {
   optimization: {
     minimize: true,
-    splitChunks: {
-      chunks: "all",
-      cacheGroups: {
-        defaultVendors: {
-          test: /[\\/]node_modules[\\/]/,
-          name: "modules",
-        },
-      },
-    },
-    runtimeChunk: {
-      name: (entrypoint: any) => `runtime-${entrypoint.name}`,
-    },
     minimizer: [
       new TerserWebpackPlugin<TerserOptions>({
         minify: TerserWebpackPlugin.terserMinify,
