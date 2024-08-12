@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.9.0](https://github.com/Infomaximum/frontend-builder/compare/v1.8.1...v1.9.0) (2024-08-12)
+
+
+### Features
+
+* splitChunks по умолчанию ([aec7f6a](https://github.com/Infomaximum/frontend-builder/commit/aec7f6a9f5615592ab00fa0936fc80fa49a428ee))
+
+
+### Bug Fixes
+
+* исправлено падение сборки при отсутствии git репозитория ([476eb6e](https://github.com/Infomaximum/frontend-builder/commit/476eb6e309fd629bc19862c0208a13c3a992f7e6))
+
 ### [1.8.1](https://github.com/Infomaximum/frontend-builder/compare/v1.8.0...v1.8.1) (2024-06-12)
 
 
