@@ -10,6 +10,12 @@ export const minimizerConfig = {
       new TerserWebpackPlugin<TerserOptions>({
         minify: TerserWebpackPlugin.terserMinify,
         parallel: true,
+        extractComments: false,
+        terserOptions: {
+          format: {
+            comments: false,
+          },
+        },
       }),
       new CssMinimizerPlugin({}),
     ],
