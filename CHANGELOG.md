@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.10.0](https://github.com/Infomaximum/frontend-builder/compare/v1.9.1...v1.10.0) (2024-09-13)
+
+
+### Features
+
+* добавлено reportFilename для BundleAnalyzerPlugin ([d7b3cf4](https://github.com/Infomaximum/frontend-builder/commit/d7b3cf43f545206d51b9f7720e36e9d5f63daf46))
+
 ### [1.9.1](https://github.com/Infomaximum/frontend-builder/compare/v1.9.0...v1.9.1) (2024-08-27)
 
 
