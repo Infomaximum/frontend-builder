@@ -20,6 +20,10 @@ export const getLoaders = (mode: TMode, PATHS: TPaths) => {
               },
             },
             {
+              type: "asset/source",
+              resourceQuery: /src/, // *.svg?src
+            },
+            {
               issuer: /\.[jt]sx?$/,
               loader: require.resolve("@svgr/webpack"),
               options: {
