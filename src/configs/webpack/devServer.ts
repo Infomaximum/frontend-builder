@@ -4,6 +4,7 @@ import webpack from "webpack";
 import fs from "fs-extra";
 import path from "path";
 import type { TPaths } from "../../paths";
+import { PROXY_HTTP_PATHS, PROXY_WS_PATHS } from "../../const";
 
 type TDevServerConfigParams = {
   appPath: string;
@@ -56,13 +57,13 @@ export const getDevServerConfig = ({
     },
     proxy: [
       {
-        context: ["/graphiql", "/static", "/graphql", "/ad_auth", "/saml_auth"],
+        context: PROXY_HTTP_PATHS,
         target: `http${target}`,
         secure: !!secure,
         changeOrigin: true,
       },
       {
-        context: ["/ws"],
+        context: PROXY_WS_PATHS,
         target: `ws${target}`,
         ws: true,
         logLevel: "silent",

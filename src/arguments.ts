@@ -3,6 +3,7 @@ import packageJson from "../package.json";
 import { runBuild } from "./scripts/build";
 import { runDevServer } from "./scripts/start";
 import { Option } from "commander";
+import { runProxy } from "./scripts/proxy";
 
 export type TWebpackCacheType = "fs" | "memory";
 
@@ -25,6 +26,14 @@ export type TBuildOptions = {
   analyze: boolean;
   watch: boolean;
   source_map: boolean;
+};
+
+export type TProxyOptions = {
+  port: string;
+  proxy_port: string | undefined;
+  proxy_ip: string;
+  https: boolean;
+  debug: boolean;
 };
 
 export const registerCommands = (cli: commander.Command) => {
@@ -64,4 +73,14 @@ export const registerCommands = (cli: commander.Command) => {
         .choices(["fs", "memory"] satisfies TWebpackCacheType[]),
     )
     .action((options: TStartOptions) => runDevServer(options));
+
+  cli
+    .command("proxy")
+    .description("Запускает проксирование собранного проекта на указанный хост")
+    .option("-p, --port <port>", "Порт на котором будет запущен сервер", "3000")
+    .option("-ph, --proxy_ip <ip>", "IP для проксирования запросов", "localhost")
+    .option("-pp, --proxy_port <port>", "Порт для проксирования запросов")
+    .option("-s, --https", "Проксирование на https/wss хост", false)
+    .option("-d, --debug", "Отладка проксирования запросов", false)
+    .action((options: TProxyOptions) => runProxy(options));
 };
