@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.0](https://github.com/Infomaximum/frontend-builder/compare/v1.11.0...v1.12.0) (2025-01-13)
+
+
+### Features
+
+* добавлена возможность проксировать запросы из собранного билда на удаленный сервер ([bdcda1e](https://github.com/Infomaximum/frontend-builder/commit/bdcda1e1d67379e3a9b9b409dd93a3f2c55bbcb1))
+
 ## [1.11.0](https://github.com/Infomaximum/frontend-builder/compare/v1.10.0...v1.11.0) (2024-09-18)
 
 
