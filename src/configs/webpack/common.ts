@@ -122,6 +122,9 @@ export const getCommonConfig = async (mode: TMode, PATHS: TPaths, isHot?: boolea
       ].filter(Boolean),
       devtool: isDev ? "cheap-module-source-map" : false,
       stats: "errors-only",
+      watchOptions: {
+        ignored: "**/node_modules",
+      },
     } as webpack.Configuration,
     getStylesConfig(mode, PATHS),
   ]);
