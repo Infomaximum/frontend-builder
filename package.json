@@ -18,6 +18,7 @@
     "build": "rimraf dist && yarn dev",
     "release": "tsc --noEmit && standard-version && yarn build",
     "lint": "tsc --noEmit",
+    "test": "tsc --noEmit",
     "prettier": "prettier --find-config-path --write 'src/**/*'"
   },
   "dependencies": {
