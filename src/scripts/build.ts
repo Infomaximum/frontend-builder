@@ -11,23 +11,22 @@ import { generatePaths, type TMode } from "../paths";
 import type { TBuildOptions } from "../arguments";
 import { getBundleAnalyzerConfig } from "../configs/webpack/bundleAnalyzer";
 import { getProgressBuildConfig } from "../configs/webpack/progressBuild";
-import { parseConfig } from "../configs/command/argsParse";
 import { tsChecker } from "../configs/webpack/tsChecker";
+import type { ImBuilderConfig } from "../configs/configFile";
 
-export const runBuild = async (args: TBuildOptions) => {
+export const runBuild = async (args: TBuildOptions, config: ImBuilderConfig | undefined) => {
   const mode: TMode = "production";
 
-  const config = parseConfig(args?.config);
-
   const PATHS = generatePaths({
-    entryPath: undefined,
-    outputPath: config?.outputDir ?? args?.output_path,
+    outputPath: config?.outputPath ?? args?.output_path,
   });
 
+  const entries = config?.entries ?? [PATHS.moduleIndex];
+
   const configList = [
-    await getCommonConfig(mode, PATHS),
+    await getCommonConfig({ mode, PATHS, entries }),
     getLoaders(mode, PATHS),
-    getHTMLConfig(mode, PATHS),
+    getHTMLConfig({ mode, PATHS, pugFilePath: config?.pugFilePath }),
     minimizerConfig,
     duplicateConfig,
     tsChecker,
@@ -71,7 +70,7 @@ function build(config: webpack.Configuration) {
         stats?.toString({
           chunks: false,
           colors: true,
-        })
+        }),
       );
   });
 }

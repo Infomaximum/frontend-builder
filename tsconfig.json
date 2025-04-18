@@ -10,7 +10,7 @@
     "skipLibCheck": true,
     "strict": true,
     "exactOptionalPropertyTypes": true,
-    "declaration": false,
+    "declaration": true,
     "downlevelIteration": true,
     "lib": ["ESNext"]
   },

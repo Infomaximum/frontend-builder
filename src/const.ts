@@ -1,2 +1,2 @@
-export const PROXY_HTTP_PATHS = ["/graphiql", "/static", "/graphql", "/ad_auth", "/saml_auth"];
-export const PROXY_WS_PATHS = ["/ws"];
+export const BUILDER_CONFIG_FILE_NAME = "imbuilder.config";
+export const BUILDER_CONFIG_FILE_EXT = ".js";

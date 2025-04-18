@@ -3,7 +3,6 @@ import fs from "fs";
 import path from "path";
 
 export type TGeneratePathsArgs = {
-  entryPath: string | undefined;
   outputPath: string | undefined;
 };
 
@@ -28,10 +27,10 @@ const moduleFileExtensions = [
 
 const resolveModule = <T extends (...args: any) => any>(
   resolveFn: T,
-  filePath: string
+  filePath: string,
 ): ReturnType<T> => {
   const extension = moduleFileExtensions.find((extension) =>
-    fs.existsSync(resolveFn(`${filePath}.${extension}`))
+    fs.existsSync(resolveFn(`${filePath}.${extension}`)),
   );
 
   if (extension) {
@@ -53,14 +52,13 @@ export const generatePaths = (args?: TGeneratePathsArgs) => {
     appBuild: resolveApp("_build"),
     assetsPath,
     appVersionConfig: resolveModule(resolveApp, "versions"),
-    appPug: path.resolve(assetsPath, "index.pug"),
-    moduleIndex: generateIndexPath(args?.entryPath),
+
+    moduleIndex: generateIndexPath(),
     appPackageJson: resolveApp("package.json"),
     appPackages: resolveApp("packages"),
     appTsConfig: resolveApp("tsconfig.json"),
     appNodeModules: resolveApp("node_modules"),
     publicPath: "/",
-    defaultDevServerPort: 3000,
     devServerHost: "0.0.0.0",
 
     staticPath,
@@ -75,15 +73,11 @@ export const MODE = {
   PROD: "production",
 } as const;
 
-export type TMode = typeof MODE[keyof typeof MODE];
+export type TMode = (typeof MODE)[keyof typeof MODE];
 export type TPaths = ReturnType<typeof generatePaths>;
 
-export const generateIndexPath = (entryPath?: string) => {
+export const generateIndexPath = () => {
   const indexSrcPath = resolveModule(resolveApp, "src/index");
-
-  if (entryPath && fs.existsSync(entryPath)) {
-    return entryPath;
-  }
 
   try {
     const mainIndexPath = path.resolve(process.cwd(), require(resolveApp("package.json"))?.main);

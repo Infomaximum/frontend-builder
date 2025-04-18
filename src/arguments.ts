@@ -4,6 +4,7 @@ import { runBuild } from "./scripts/build";
 import { runDevServer } from "./scripts/start";
 import { Option } from "commander";
 import { runProxy } from "./scripts/proxy";
+import { getConfigBuilderFromFile } from "./configs/configFile";
 
 export type TWebpackCacheType = "fs" | "memory";
 
@@ -12,7 +13,6 @@ export type TStartOptions = {
   proxy_port: string | undefined;
   proxy_ip: string;
   entry_path?: string;
-  overlay: boolean;
   circular: boolean;
   write: boolean;
   https: boolean;
@@ -22,7 +22,6 @@ export type TStartOptions = {
 
 export type TBuildOptions = {
   output_path?: string;
-  config?: string;
   analyze: boolean;
   watch: boolean;
   source_map: boolean;
@@ -41,6 +40,8 @@ export const registerCommands = (cli: commander.Command) => {
   cli.name(packageJson.name);
   cli.version(packageJson.version, "-v, --version", "Текущая версия библиотеки");
 
+  const config = getConfigBuilderFromFile();
+
   cli
     .command("build")
     .description("Запускает сборку проекта")
@@ -49,10 +50,9 @@ export const registerCommands = (cli: commander.Command) => {
       "Путь куда будет собран билд, по умолчанию папка откуда  выполняется команда",
     )
     .option("-a, --analyze", "Генерирует файл с размерами пакетов в бандле", false)
-    .option("--c, --config <path>", "Использовать конфиг для сборки")
     .option("-w, --watch", "Отслеживает изменения и автоматически перезапускает сборку", false)
     .option("-s, --source_map", "Генерировать sourse map", false)
-    .action((options: TBuildOptions) => runBuild(options));
+    .action((options: TBuildOptions) => runBuild(options, config));
 
   cli
     .command("start")
@@ -63,8 +63,6 @@ export const registerCommands = (cli: commander.Command) => {
     .option("-a, --analyze", "Генерирует файл с размерами пакетов в бандле", false)
     .option("-e, --entry_path <path>", "Путь до входной точки приложения")
     .option("-c, --circular", "Включает отслеживание циклических зависимостей", false)
-    // todo: https://github.com/smooth-code/error-overlay-webpack-plugin/issues/67
-    //.option("-o, --overlay", "Включает поддержку overlay с отображением ошибок в браузере", false)
     .option("-w, --write", "Записывает выходные данные на диск вместо оперативной памяти", false)
     .option("--hot", "Включает режим HMR", false)
     .addOption(
@@ -72,7 +70,7 @@ export const registerCommands = (cli: commander.Command) => {
         .default("memory" satisfies TWebpackCacheType)
         .choices(["fs", "memory"] satisfies TWebpackCacheType[]),
     )
-    .action((options: TStartOptions) => runDevServer(options));
+    .action((options: TStartOptions) => runDevServer(options, config));
 
   cli
     .command("proxy")
@@ -82,5 +80,5 @@ export const registerCommands = (cli: commander.Command) => {
     .option("-pp, --proxy_port <port>", "Порт для проксирования запросов")
     .option("-s, --https", "Проксирование на https/wss хост", false)
     .option("-d, --debug", "Отладка проксирования запросов", false)
-    .action((options: TProxyOptions) => runProxy(options));
+    .action((options: TProxyOptions) => runProxy(options, config));
 };

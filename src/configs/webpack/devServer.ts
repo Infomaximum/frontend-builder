@@ -1,34 +1,34 @@
 import type WebpackDevServer from "webpack-dev-server";
 import monitor from "express-status-monitor";
 import webpack from "webpack";
-import fs from "fs-extra";
-import path from "path";
-import type { TPaths } from "../../paths";
-import { PROXY_HTTP_PATHS, PROXY_WS_PATHS } from "../../const";
+import type { ImBuilderConfig } from "../configFile";
 
-type TDevServerConfigParams = {
-  appPath: string;
-  port: number;
-  host: string;
+type ProxyConfig = {
   proxyPort: string | undefined;
   proxyHost: string;
+};
+
+type TDevServerConfigParams = {
+  port: number;
+  host: string;
   writeToDisk: boolean;
   isHttps: boolean;
-  PATHS: TPaths;
   hot: boolean;
+  proxy: ProxyConfig;
+  config: ImBuilderConfig | undefined;
 };
 
 export const getDevServerConfig = ({
-  appPath,
   port,
   host,
-  proxyPort,
-  proxyHost,
+  proxy,
   writeToDisk,
   isHttps,
-  PATHS,
   hot,
+  config,
 }: TDevServerConfigParams): WebpackDevServer.Configuration => {
+  const { proxyHost, proxyPort } = proxy;
+
   const secure = isHttps ? "s" : "";
 
   const target = `${secure}://${proxyHost}${proxyPort ? `:${proxyPort}` : ""}`;
@@ -57,13 +57,13 @@ export const getDevServerConfig = ({
     },
     proxy: [
       {
-        context: PROXY_HTTP_PATHS,
+        context: config?.devServer?.proxy?.proxyHTTPPaths,
         target: `http${target}`,
         secure: !!secure,
         changeOrigin: true,
       },
       {
-        context: PROXY_WS_PATHS,
+        context: config?.devServer?.proxy?.proxyWSPaths,
         target: `ws${target}`,
         ws: true,
         logLevel: "silent",
@@ -74,37 +74,6 @@ export const getDevServerConfig = ({
     setupMiddlewares: (middlewares, devServer) => {
       if (!devServer) {
         throw new Error("webpack-dev-server is not defined");
-      }
-
-      const isModulesFile = () => fs.existsSync(path.resolve(appPath, "modules.json"));
-
-      if (isModulesFile()) {
-        devServer.app?.get("/gen", (req, res) => {
-          if (isModulesFile()) {
-            res.contentType("application/json");
-            res.setHeader("Access-Control-Allow-Origin", "*");
-
-            const readable = fs.createReadStream(path.resolve(appPath, "modules.json"), {
-              encoding: "utf-8",
-            });
-
-            readable.pipe(res);
-          } else {
-            res.status(500);
-
-            res.send("Не найден файл modules.json");
-          }
-        });
-
-        devServer.app?.get("/generator", (req, res) => {
-          res.setHeader("Access-Control-Allow-Origin", "*");
-          res.sendFile(path.resolve(PATHS.assetsPath, "generator.html"));
-        });
-
-        devServer.app?.get("/heap", (req, res) => {
-          require("v8").writeHeapSnapshot();
-          res.send("ok");
-        });
       }
 
       devServer.app?.use(
@@ -132,6 +101,12 @@ export const getDevServerConfig = ({
             : undefined,
         }),
       );
+
+      if (typeof config?.devServer?.customMiddlewares === "function") {
+        const result = config.devServer.customMiddlewares(middlewares, devServer);
+
+        return result ? result : middlewares;
+      }
 
       return middlewares;
     },
