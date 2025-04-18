@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/Infomaximum/frontend-builder/compare/v1.12.0...v2.0.0) (2025-04-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* изменился подход по работе с инструментом
+
+### Features
+
+* в конфигурацию добавлен порт и хост для проксирования ([782d3dd](https://github.com/Infomaximum/frontend-builder/commit/782d3dd52ccddb1ec6a03943671581f894eae9c4))
+* игнорирование node_modules при отслеживании изменений ([2032c50](https://github.com/Infomaximum/frontend-builder/commit/2032c505a323e274a1d499cf139b1c48c77c9b41))
+* реализация работы с файлом конфигурации ([6b0ba5e](https://github.com/Infomaximum/frontend-builder/commit/6b0ba5e862a212eb38a55105624261bbbfd8f9f9))
+
 ## [1.12.0](https://github.com/Infomaximum/frontend-builder/compare/v1.11.0...v1.12.0) (2025-01-13)
 
 
