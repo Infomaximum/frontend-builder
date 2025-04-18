@@ -59,7 +59,6 @@ export const generatePaths = (args?: TGeneratePathsArgs) => {
     appTsConfig: resolveApp("tsconfig.json"),
     appNodeModules: resolveApp("node_modules"),
     publicPath: "/",
-    devServerHost: "0.0.0.0",
 
     staticPath,
     imagePath: `${staticPath}/img`,

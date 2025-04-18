@@ -11,7 +11,7 @@ export type TWebpackCacheType = "fs" | "memory";
 export type TStartOptions = {
   analyze: boolean;
   proxy_port: string | undefined;
-  proxy_ip: string;
+  proxy_ip: string | undefined;
   entry_path?: string;
   circular: boolean;
   write: boolean;
@@ -57,7 +57,7 @@ export const registerCommands = (cli: commander.Command) => {
   cli
     .command("start")
     .description("Запускает проект в dev режиме")
-    .option("-ph, --proxy_ip <ip>", "IP для проксирования запросов", "localhost")
+    .option("-ph, --proxy_ip <ip>", "IP для проксирования запросов")
     .option("-pp, --proxy_port <port>", "Порт для проксирования запросов")
     .option("-s, --https", "Проксирование на https/wss хост", false)
     .option("-a, --analyze", "Генерирует файл с размерами пакетов в бандле", false)

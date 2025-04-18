@@ -14,6 +14,16 @@ type ProxyConfig = {
    * Список websocket url для проксирования dev server
    */
   proxyWSPaths?: string[];
+
+  /**
+   * Хост на который будет происходить проксирование всех запросов
+   */
+  host: string;
+
+  /**
+   * Порт на который будет происходить проксирование всех запросов
+   */
+  port: number;
 };
 
 type DevServerConfig = {

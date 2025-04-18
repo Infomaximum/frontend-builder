@@ -32,7 +32,8 @@ export const runDevServer = async (options: TStartOptions, config: ImBuilderConf
 };
 
 const run = async (PATHS: TPaths, options: TStartOptions, config: ImBuilderConfig | undefined) => {
-  const { devServerHost, appPath } = PATHS;
+  const devServerHost = "0.0.0.0";
+
   let port = config?.devServer?.defaultPort;
 
   const defaultPort = config?.devServer?.defaultPort ?? 3000;
@@ -66,8 +67,6 @@ const run = async (PATHS: TPaths, options: TStartOptions, config: ImBuilderConfi
   const proxy = {
     proxyPort: options.proxy_port,
     proxyHost: options.proxy_ip,
-    proxyHttpPaths: config?.devServer?.proxy?.proxyHTTPPaths,
-    proxyWSPaths: config?.devServer?.proxy?.proxyWSPaths,
   };
 
   const devServerConfig = getDevServerConfig({

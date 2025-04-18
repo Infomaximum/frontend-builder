@@ -5,7 +5,7 @@ import type { ImBuilderConfig } from "../configFile";
 
 type ProxyConfig = {
   proxyPort: string | undefined;
-  proxyHost: string;
+  proxyHost: string | undefined;
 };
 
 type TDevServerConfigParams = {
@@ -31,7 +31,10 @@ export const getDevServerConfig = ({
 
   const secure = isHttps ? "s" : "";
 
-  const target = `${secure}://${proxyHost}${proxyPort ? `:${proxyPort}` : ""}`;
+  const ph = proxyHost ?? config?.devServer?.proxy?.host ?? "localhost";
+  const pp = proxyPort ?? config?.devServer?.proxy?.port ?? 8091;
+
+  const target = `${secure}://${ph}${`:${pp}`}`;
 
   return {
     port,
@@ -89,16 +92,17 @@ export const getDevServerConfig = ({
             rps: false,
             statusCodes: false,
           },
-          healthChecks: proxyPort
-            ? [
-                {
-                  protocol: `http${secure}`,
-                  path: `/graphql?query={server{status}}`,
-                  host: proxyHost,
-                  port: proxyPort,
-                },
-              ]
-            : undefined,
+          healthChecks:
+            proxyPort && proxyHost
+              ? [
+                  {
+                    protocol: `http${secure}`,
+                    path: `/graphql?query={server{status}}`,
+                    host: proxyHost,
+                    port: proxyPort,
+                  },
+                ]
+              : undefined,
         }),
       );
 
