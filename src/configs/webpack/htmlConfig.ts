@@ -3,10 +3,16 @@ import type { TMode, TPaths } from "../../paths";
 import fs from "fs";
 import chalk from "chalk";
 
-export const getHTMLConfig = (mode: TMode, PATHS: TPaths) => {
+type HTMLConfigParams = {
+  pugFilePath: string | undefined;
+  mode: TMode;
+  PATHS: TPaths;
+};
+
+export const getHTMLConfig = ({ mode, PATHS, pugFilePath }: HTMLConfigParams) => {
   const isProd = mode === "production";
 
-  if (!fs.existsSync(PATHS.appPug)) {
+  if (!pugFilePath || !fs.existsSync(pugFilePath)) {
     console.log(chalk.bold.red("Не найден index.pug"));
     return {};
   }
@@ -31,7 +37,7 @@ export const getHTMLConfig = (mode: TMode, PATHS: TPaths) => {
       new HtmlWebpackPlugin({
         filename: "index.html",
         inject: false,
-        template: `!!pug-loader!${PATHS.appPug}`,
+        template: `!!pug-loader!${pugFilePath}`,
 
         buildDir: PATHS.appRelease,
         staticPath: `${PATHS.publicPath}${PATHS.staticPath}`,

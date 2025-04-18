@@ -10,7 +10,14 @@ import { getVersionPackages, getHashLastCommit, getCurrentBranchOrTagName } from
 import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 import ReactRefreshTypeScript from "react-refresh-typescript";
 
-export const getCommonConfig = async (mode: TMode, PATHS: TPaths, isHot?: boolean) => {
+type CommonParams = {
+  mode: TMode;
+  PATHS: TPaths;
+  isHot?: boolean;
+  entries: string[];
+};
+
+export const getCommonConfig = async ({ mode, PATHS, isHot, entries }: CommonParams) => {
   const isDev = mode === "development";
   const isProd = mode === "production";
   const isHMR = isHot && isDev;
@@ -30,7 +37,7 @@ export const getCommonConfig = async (mode: TMode, PATHS: TPaths, isHot?: boolea
     {
       context: PATHS.appPath,
       mode: mode,
-      entry: [require.resolve("core-js"), PATHS.moduleIndex],
+      entry: [require.resolve("core-js"), ...entries],
       output: {
         path: PATHS.appRelease,
         publicPath: PATHS.publicPath,
@@ -122,6 +129,9 @@ export const getCommonConfig = async (mode: TMode, PATHS: TPaths, isHot?: boolea
       ].filter(Boolean),
       devtool: isDev ? "cheap-module-source-map" : false,
       stats: "errors-only",
+      watchOptions: {
+        ignored: "**/node_modules",
+      },
     } as webpack.Configuration,
     getStylesConfig(mode, PATHS),
   ]);

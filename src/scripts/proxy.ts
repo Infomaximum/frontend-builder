@@ -3,9 +3,9 @@ import path from "path";
 import { createProxyMiddleware } from "http-proxy-middleware";
 import type { TProxyOptions } from "../arguments";
 import { generatePaths } from "../paths";
-import { PROXY_HTTP_PATHS, PROXY_WS_PATHS } from "../const";
+import type { ImBuilderConfig } from "../configs/configFile";
 
-export const runProxy = (options: TProxyOptions) => {
+export const runProxy = (options: TProxyOptions, config: ImBuilderConfig | undefined) => {
   const { port, proxy_ip, https, proxy_port, debug } = options;
 
   const secure = https ? "s" : "";
@@ -17,7 +17,7 @@ export const runProxy = (options: TProxyOptions) => {
 
   app.use(express.static(PATHS.appRelease));
 
-  PROXY_HTTP_PATHS.forEach((proxyPath) => {
+  config?.devServer?.proxy?.proxyHTTPPaths?.forEach((proxyPath) => {
     app.use(
       proxyPath,
       createProxyMiddleware({
@@ -40,7 +40,7 @@ export const runProxy = (options: TProxyOptions) => {
     );
   });
 
-  PROXY_WS_PATHS.forEach((proxyPath) => {
+  config?.devServer?.proxy?.proxyWSPaths?.forEach((proxyPath) => {
     app.use(
       proxyPath,
       createProxyMiddleware({
