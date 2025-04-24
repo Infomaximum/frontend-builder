@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/Infomaximum/frontend-builder/compare/v2.0.0...v2.1.0) (2025-04-24)
+
+
+### Features
+
+* добавлено сжатие ресурсов при проксировании запросов ([af372ac](https://github.com/Infomaximum/frontend-builder/commit/af372ac7e465d0a6f417790b07c2754382bf2deb))
+
 ## [2.0.0](https://github.com/Infomaximum/frontend-builder/compare/v1.12.0...v2.0.0) (2025-04-18)
 
 
