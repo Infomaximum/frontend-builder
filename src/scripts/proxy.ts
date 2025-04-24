@@ -3,6 +3,7 @@ import path from "path";
 import { createProxyMiddleware } from "http-proxy-middleware";
 import type { TProxyOptions } from "../arguments";
 import { generatePaths } from "../paths";
+import compression from "compression";
 import type { ImBuilderConfig } from "../configs/configFile";
 
 export const runProxy = (options: TProxyOptions, config: ImBuilderConfig | undefined) => {
@@ -15,6 +16,7 @@ export const runProxy = (options: TProxyOptions, config: ImBuilderConfig | undef
 
   const PATHS = generatePaths();
 
+  app.use(compression());
   app.use(express.static(PATHS.appRelease));
 
   config?.devServer?.proxy?.proxyHTTPPaths?.forEach((proxyPath) => {
