@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/Infomaximum/frontend-builder/compare/v2.1.0...v2.2.0) (2025-04-25)
+
+
+### Features
+
+* группировка css чанков ([368a948](https://github.com/Infomaximum/frontend-builder/commit/368a9488196167a76d5ce2bd1e4b9e49b565c5d7))
+
 ## [2.1.0](https://github.com/Infomaximum/frontend-builder/compare/v2.0.0...v2.1.0) (2025-04-24)
 
 
