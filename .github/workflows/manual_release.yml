@@ -75,7 +75,7 @@ jobs:
 
       - name: Push changes
         run: |
-          git push origin master --follow-tags
+          git push --follow-tags
 
       - name: Build package
         run: yarn build
