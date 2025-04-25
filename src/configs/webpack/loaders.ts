@@ -16,7 +16,7 @@ export const getLoaders = (mode: TMode, PATHS: TPaths) => {
                 },
               },
               generator: {
-                filename: "_build/static/img/[hash][ext][query]",
+                filename: `${PATHS.imagePath}/[hash][ext][query]`,
               },
             },
             {

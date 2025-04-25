@@ -5,6 +5,17 @@ import type webpack from "webpack";
 
 export const minimizerConfig = {
   optimization: {
+    splitChunks: {
+      cacheGroups: {
+        styles: {
+          name: "styles",
+          type: "css/mini-extract",
+          chunks: "all",
+          enforce: true,
+        },
+      },
+    },
+    moduleIds: "deterministic",
     minimize: true,
     minimizer: [
       new TerserWebpackPlugin<TerserOptions>({
