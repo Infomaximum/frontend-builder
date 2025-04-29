@@ -9,6 +9,7 @@ import type webpack from "webpack";
 import { getVersionPackages, getHashLastCommit, getCurrentBranchOrTagName } from "./utils/utils";
 import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 import ReactRefreshTypeScript from "react-refresh-typescript";
+import { resolvePathFromModule } from "../configFile";
 
 type CommonParams = {
   mode: TMode;
@@ -33,13 +34,16 @@ export const getCommonConfig = async ({ mode, PATHS, isHot, entries }: CommonPar
   const versions = await getVersionPackages(PATHS);
   const branchName = await getCurrentBranchOrTagName(PATHS);
 
-  const dynamicEntries = typeof entries === "function" ? entries() : entries;
-
   return merge([
     {
       context: PATHS.appPath,
       mode: mode,
-      entry: () => [require.resolve("core-js"), ...dynamicEntries],
+      entry: () => [
+        require.resolve("core-js"),
+        ...(typeof entries === "function" ? entries() : entries).map((p) =>
+          resolvePathFromModule(p),
+        ),
+      ],
       output: {
         path: PATHS.appRelease,
         publicPath: PATHS.publicPath,

@@ -81,12 +81,6 @@ function prepareConfigPaths(config: ImBuilderConfig | undefined): ImBuilderConfi
     return config;
   }
 
-  if (config.entries) {
-    config.entries = (typeof config.entries === "function" ? config.entries() : config.entries).map(
-      (p) => resolvePathFromModule(p),
-    );
-  }
-
   if (config.pugFilePath) {
     config.pugFilePath = resolvePathFromModule(config.pugFilePath);
   }
