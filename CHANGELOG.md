@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.3.0](https://github.com/Infomaximum/frontend-builder/compare/v2.2.0...v2.3.0) (2025-04-29)
+
+
+### Features
+
+* добавлена возможность использовать динамическое подключение entry ([8547229](https://github.com/Infomaximum/frontend-builder/commit/854722985a53d35eb3a49d22c5ac198dff1ca295))
+
 ## [2.2.0](https://github.com/Infomaximum/frontend-builder/compare/v2.1.0...v2.2.0) (2025-04-25)
 
 
