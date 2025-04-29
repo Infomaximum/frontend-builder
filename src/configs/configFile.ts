@@ -46,7 +46,7 @@ export type ImBuilderConfig = {
   /**
    * список энтрипоинтов
    */
-  entries: string[];
+  entries: string[] | (() => string[]);
   outputPath: string;
   pugFilePath?: string;
   /**
@@ -82,7 +82,9 @@ function prepareConfigPaths(config: ImBuilderConfig | undefined): ImBuilderConfi
   }
 
   if (config.entries) {
-    config.entries = config.entries.map((p) => resolvePathFromModule(p));
+    config.entries = (typeof config.entries === "function" ? config.entries() : config.entries).map(
+      (p) => resolvePathFromModule(p),
+    );
   }
 
   if (config.pugFilePath) {

@@ -14,7 +14,7 @@ type CommonParams = {
   mode: TMode;
   PATHS: TPaths;
   isHot?: boolean;
-  entries: string[];
+  entries: string[] | (() => string[]);
 };
 
 export const getCommonConfig = async ({ mode, PATHS, isHot, entries }: CommonParams) => {
@@ -33,11 +33,13 @@ export const getCommonConfig = async ({ mode, PATHS, isHot, entries }: CommonPar
   const versions = await getVersionPackages(PATHS);
   const branchName = await getCurrentBranchOrTagName(PATHS);
 
+  const dynamicEntries = typeof entries === "function" ? entries() : entries;
+
   return merge([
     {
       context: PATHS.appPath,
       mode: mode,
-      entry: [require.resolve("core-js"), ...entries],
+      entry: () => [require.resolve("core-js"), ...dynamicEntries],
       output: {
         path: PATHS.appRelease,
         publicPath: PATHS.publicPath,
