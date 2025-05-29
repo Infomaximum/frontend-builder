@@ -43,6 +43,7 @@ export const getDevServerRspackConfig = ({
     client: hot
       ? {
           overlay: false,
+          logging: "error",
         }
       : false,
     historyApiFallback: { disableDotRule: true },

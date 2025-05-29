@@ -44,6 +44,7 @@ export const getDevServerWebpackConfig = ({
     client: hot
       ? {
           overlay: false,
+          logging: "error",
         }
       : false,
     historyApiFallback: { disableDotRule: true },
