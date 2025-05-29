@@ -1,7 +1,7 @@
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import type webpack from "webpack";
 
-export const tsChecker = {
+export const tsCheckerWebpackConfig = {
   plugins: [
     new ForkTsCheckerWebpackPlugin({
       async: true,

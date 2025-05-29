@@ -1,21 +1,24 @@
 import webpack from "webpack";
 import WebpackDevServer from "webpack-dev-server";
 import { choosePort } from "react-dev-utils/WebpackDevServerUtils";
-import { generatePaths, type TMode, type TPaths } from "../paths";
+import { generatePaths, type TMode, type TPaths } from "../../paths";
 import { merge } from "webpack-merge";
-import { getDevServerConfig } from "../configs/webpack/devServer";
+import { getDevServerWebpackConfig } from "../../configs/webpack/devServer";
 import chalk from "chalk";
-import { getCommonConfig } from "../configs/webpack/common";
-import { getLoaders } from "../configs/webpack/loaders";
-import { getHTMLConfig } from "../configs/webpack/htmlConfig";
-import { tsChecker } from "../configs/webpack/tsChecker";
-import type { TStartOptions } from "../arguments";
-import { getBundleAnalyzerConfig } from "../configs/webpack/bundleAnalyzer";
-import { circularDependencyDetector } from "../configs/webpack/circularDep";
-import { getWebpackCacheConfig } from "../configs/webpack/cache";
-import type { ImBuilderConfig } from "../configs/configFile";
+import { getCommonWebpackConfig } from "../../configs/webpack/common";
+import { getWebpackLoaders } from "../../configs/webpack/loaders";
+import { getHTMLWebpackConfig } from "../../configs/webpack/htmlConfig";
+import { tsCheckerWebpackConfig } from "../../configs/webpack/tsChecker";
+import type { TStartOptions } from "../../arguments";
+import { getBundleAnalyzerConfig } from "../../configs/webpack/bundleAnalyzer";
+import { circularDependencyDetector } from "../../configs/webpack/circularDep";
+import { getWebpackCacheConfig } from "../../configs/webpack/cache";
+import type { ImBuilderConfig } from "../../configs/configFile";
 
-export const runDevServer = async (options: TStartOptions, config: ImBuilderConfig | undefined) => {
+export const runWebpackDevServer = async (
+  options: TStartOptions,
+  config: ImBuilderConfig | undefined,
+) => {
   const PATHS = generatePaths({
     outputPath: undefined,
   });
@@ -53,12 +56,12 @@ const run = async (PATHS: TPaths, options: TStartOptions, config: ImBuilderConfi
   const entries = config?.entries ?? [PATHS.moduleIndex];
 
   const configWebpack = [
-    await getCommonConfig({ mode, PATHS, isHot, entries }),
+    await getCommonWebpackConfig({ mode, PATHS, isHot, entries }),
     getWebpackCacheConfig(options.cache),
-    getLoaders(mode, PATHS),
-    getHTMLConfig({ mode, PATHS, pugFilePath: config?.pugFilePath }),
+    getWebpackLoaders(mode, PATHS),
+    getHTMLWebpackConfig({ mode, PATHS, pugFilePath: config?.pugFilePath }),
     options.analyze ? getBundleAnalyzerConfig() : {},
-    tsChecker,
+    tsCheckerWebpackConfig,
     options.circular ? circularDependencyDetector : {},
   ];
 
@@ -69,7 +72,7 @@ const run = async (PATHS: TPaths, options: TStartOptions, config: ImBuilderConfi
     proxyHost: options.proxy_ip,
   };
 
-  const devServerConfig = getDevServerConfig({
+  const devServerConfig = getDevServerWebpackConfig({
     port,
     host: devServerHost,
     writeToDisk: options.write,

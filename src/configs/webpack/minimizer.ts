@@ -3,7 +3,7 @@ import type { MinifyOptions as TerserOptions } from "terser";
 import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
 import type webpack from "webpack";
 
-export const minimizerConfig = {
+export const minimizerWebpackConfig = {
   optimization: {
     splitChunks: {
       cacheGroups: {

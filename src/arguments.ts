@@ -1,10 +1,12 @@
 import type commander from "commander";
 import packageJson from "../package.json";
-import { runBuild } from "./scripts/build";
-import { runDevServer } from "./scripts/start";
+import { runWebpackBuild } from "./scripts/webpack/build";
+import { runWebpackDevServer } from "./scripts/webpack/start";
 import { Option } from "commander";
 import { runProxy } from "./scripts/proxy";
 import { getConfigBuilderFromFile } from "./configs/configFile";
+import { runRspackDevServer } from "./scripts/rspack/start";
+import { runRspackBuild } from "./scripts/rspack/build";
 
 export type TWebpackCacheType = "fs" | "memory";
 
@@ -18,6 +20,7 @@ export type TStartOptions = {
   https: boolean;
   hot: boolean;
   cache: TWebpackCacheType;
+  webpack: boolean;
 };
 
 export type TBuildOptions = {
@@ -25,6 +28,7 @@ export type TBuildOptions = {
   analyze: boolean;
   watch: boolean;
   source_map: boolean;
+  webpack: boolean;
 };
 
 export type TProxyOptions = {
@@ -52,7 +56,10 @@ export const registerCommands = (cli: commander.Command) => {
     .option("-a, --analyze", "Генерирует файл с размерами пакетов в бандле", false)
     .option("-w, --watch", "Отслеживает изменения и автоматически перезапускает сборку", false)
     .option("-s, --source_map", "Генерировать sourse map", false)
-    .action((options: TBuildOptions) => runBuild(options, config));
+    .option("--webpack", "Сборка с использованием webpack", false)
+    .action((options: TBuildOptions) =>
+      (options.webpack ? runWebpackBuild : runRspackBuild)(options, config),
+    );
 
   cli
     .command("start")
@@ -65,12 +72,15 @@ export const registerCommands = (cli: commander.Command) => {
     .option("-c, --circular", "Включает отслеживание циклических зависимостей", false)
     .option("-w, --write", "Записывает выходные данные на диск вместо оперативной памяти", false)
     .option("--hot", "Включает режим HMR", false)
+    .option("--webpack", "Разработка с использованием webpack", false)
     .addOption(
       new Option("--cache <cache type>", "Используемый тип кеша webpack")
         .default("memory" satisfies TWebpackCacheType)
         .choices(["fs", "memory"] satisfies TWebpackCacheType[]),
     )
-    .action((options: TStartOptions) => runDevServer(options, config));
+    .action((options: TStartOptions) =>
+      (options.webpack ? runWebpackDevServer : runRspackDevServer)(options, config),
+    );
 
   cli
     .command("proxy")

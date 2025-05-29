@@ -2,19 +2,19 @@ import chalk from "chalk";
 import webpack, { Stats } from "webpack";
 import { merge } from "webpack-merge";
 import printBuildError from "react-dev-utils/printBuildError";
-import { getCommonConfig } from "../configs/webpack/common";
-import { duplicateConfig } from "../configs/webpack/duplicatePackage";
-import { getHTMLConfig } from "../configs/webpack/htmlConfig";
-import { getLoaders } from "../configs/webpack/loaders";
-import { minimizerConfig } from "../configs/webpack/minimizer";
-import { generatePaths, type TMode } from "../paths";
-import type { TBuildOptions } from "../arguments";
-import { getBundleAnalyzerConfig } from "../configs/webpack/bundleAnalyzer";
-import { getProgressBuildConfig } from "../configs/webpack/progressBuild";
-import { tsChecker } from "../configs/webpack/tsChecker";
-import type { ImBuilderConfig } from "../configs/configFile";
+import { getCommonWebpackConfig } from "../../configs/webpack/common";
+import { duplicateConfig } from "../../configs/webpack/duplicatePackage";
+import { getHTMLWebpackConfig } from "../../configs/webpack/htmlConfig";
+import { getWebpackLoaders } from "../../configs/webpack/loaders";
+import { minimizerWebpackConfig } from "../../configs/webpack/minimizer";
+import { generatePaths, type TMode } from "../../paths";
+import type { TBuildOptions } from "../../arguments";
+import { getBundleAnalyzerConfig } from "../../configs/webpack/bundleAnalyzer";
+import { getProgressBuildWebpackConfig } from "../../configs/webpack/progressBuild";
+import { tsCheckerWebpackConfig } from "../../configs/webpack/tsChecker";
+import type { ImBuilderConfig } from "../../configs/configFile";
 
-export const runBuild = async (args: TBuildOptions, config: ImBuilderConfig | undefined) => {
+export const runWebpackBuild = async (args: TBuildOptions, config: ImBuilderConfig | undefined) => {
   const mode: TMode = "production";
 
   const PATHS = generatePaths({
@@ -24,17 +24,17 @@ export const runBuild = async (args: TBuildOptions, config: ImBuilderConfig | un
   const entries = config?.entries ?? [PATHS.moduleIndex];
 
   const configList = [
-    await getCommonConfig({ mode, PATHS, entries }),
-    getLoaders(mode, PATHS),
-    getHTMLConfig({ mode, PATHS, pugFilePath: config?.pugFilePath }),
-    minimizerConfig,
+    await getCommonWebpackConfig({ mode, PATHS, entries }),
+    getWebpackLoaders(mode, PATHS),
+    getHTMLWebpackConfig({ mode, PATHS, pugFilePath: config?.pugFilePath }),
+    minimizerWebpackConfig,
     duplicateConfig,
-    tsChecker,
+    tsCheckerWebpackConfig,
   ] as webpack.Configuration[];
 
   args?.analyze && configList.push(getBundleAnalyzerConfig());
   // могут быть проблемы (шрифты, картинки и др.ресурсы не  копируются при повторном билде)
-  args?.watch && configList.push({ watch: true }, getProgressBuildConfig(PATHS));
+  args?.watch && configList.push({ watch: true }, getProgressBuildWebpackConfig(PATHS));
   args?.source_map && configList.push({ devtool: "source_map" });
 
   const webpackConfig = merge(configList);

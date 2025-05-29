@@ -1,6 +1,6 @@
 import type { TMode, TPaths } from "../../paths";
 
-export const getWebpackLoaders = (mode: TMode, PATHS: TPaths) => {
+export const getRspackLoaders = (mode: TMode, PATHS: TPaths) => {
   return {
     module: {
       rules: [
@@ -25,7 +25,7 @@ export const getWebpackLoaders = (mode: TMode, PATHS: TPaths) => {
             },
             {
               issuer: /\.[jt]sx?$/,
-              loader: require.resolve("@svgr/webpack"),
+              loader: "@svgr/webpack",
               options: {
                 svgoConfig: {
                   plugins: [
@@ -40,15 +40,15 @@ export const getWebpackLoaders = (mode: TMode, PATHS: TPaths) => {
           ],
         },
         {
-          test: /\.pug/,
-          use: require.resolve("pug-loader"),
-        },
-        {
           test: /\.(png|jpe?g|gif|cur)$/i,
           type: "asset/resource",
           generator: {
             filename: `${PATHS.imagePath}/[name][ext]`,
           },
+        },
+        {
+          test: /\.pug$/,
+          use: ["pug-loader"],
         },
         {
           test: /\.(woff(2)?|ttf|eot)$/i,
