@@ -81,7 +81,7 @@ export const getDevServerRspackConfig = ({
 
       devServer.app?.use(
         monitor({
-          title: `Dev Server Status (rspack v${rspack.version})`,
+          title: `Dev Server Status (rspack v${rspack.rspackVersion}, webpack v${rspack.version})`,
           path: "/status",
           chartVisibility: {
             cpu: true,
