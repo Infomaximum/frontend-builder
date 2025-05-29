@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0-0](https://github.com/Infomaximum/frontend-builder/compare/v2.3.1...v3.0.0-0) (2025-05-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* rspack по умолчанию
+
+### Features
+
+* добавлен rspack ([756db1d](https://github.com/Infomaximum/frontend-builder/commit/756db1db702d7d3c5eac96ea2f295f5433328b95))
+
 ### [2.3.1](https://github.com/Infomaximum/frontend-builder/compare/v2.3.0...v2.3.1) (2025-04-29)
 
 
