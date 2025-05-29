@@ -1,7 +1,6 @@
-import type WebpackDevServer from "webpack-dev-server";
 import monitor from "express-status-monitor";
-import webpack from "webpack";
 import type { ImBuilderConfig } from "../configFile";
+import { rspack, type DevServer } from "@rspack/core";
 
 type ProxyConfig = {
   proxyPort: string | undefined;
@@ -18,7 +17,7 @@ type TDevServerConfigParams = {
   config: ImBuilderConfig | undefined;
 };
 
-export const getDevServerWebpackConfig = ({
+export const getDevServerRspackConfig = ({
   port,
   host,
   proxy,
@@ -26,7 +25,7 @@ export const getDevServerWebpackConfig = ({
   isHttps,
   hot,
   config,
-}: TDevServerConfigParams): WebpackDevServer.Configuration => {
+}: TDevServerConfigParams): DevServer => {
   const { proxyHost, proxyPort } = proxy;
 
   const secure = isHttps ? "s" : "";
@@ -81,7 +80,7 @@ export const getDevServerWebpackConfig = ({
 
       devServer.app?.use(
         monitor({
-          title: `Dev Server Status (webpack v${webpack.version})`,
+          title: `Dev Server Status (rspack v${rspack.version})`,
           path: "/status",
           chartVisibility: {
             cpu: true,
@@ -114,5 +113,5 @@ export const getDevServerWebpackConfig = ({
 
       return middlewares;
     },
-  };
+  } satisfies DevServer;
 };

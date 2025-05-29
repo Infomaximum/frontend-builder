@@ -1,7 +1,7 @@
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import type { TMode, TPaths } from "../../paths";
 
-export const getStylesConfig = (mode: TMode, PATHS: TPaths) => {
+export const getStylesWebpackConfig = (mode: TMode, PATHS: TPaths) => {
   const isDev = mode === "development";
   const isProd = mode === "production";
 
@@ -52,8 +52,8 @@ export const getStylesConfig = (mode: TMode, PATHS: TPaths) => {
     plugins: [
       isProd &&
         new MiniCssExtractPlugin({
-          filename: `${PATHS.staticPath}/css/[name].[contenthash].css`,
-          chunkFilename: `${PATHS.staticPath}/css/[id].[contenthash].css`,
+          filename: `${PATHS.buildCssPath}/[name].[contenthash].css`,
+          chunkFilename: `${PATHS.buildCssPath}/[id].[contenthash].css`,
           ignoreOrder: true,
           experimentalUseImportModule: true,
         }),

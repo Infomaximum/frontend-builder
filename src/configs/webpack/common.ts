@@ -1,12 +1,11 @@
 import RemovePlugin from "remove-files-webpack-plugin";
 import { merge } from "webpack-merge";
-import WebpackBar from "webpackbar";
 import { DefinePlugin, ContextReplacementPlugin, ProvidePlugin } from "webpack";
 import type { TMode, TPaths } from "../../paths";
 import { getBabelConfig } from "./babel";
-import { getStylesConfig } from "./styles";
-import type webpack from "webpack";
-import { getVersionPackages, getHashLastCommit, getCurrentBranchOrTagName } from "./utils/utils";
+import { getStylesWebpackConfig } from "./styles";
+import webpack from "webpack";
+import { getCurrentBranchOrTagName, getHashLastCommit, getVersionPackages } from "../../utils";
 import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 import ReactRefreshTypeScript from "react-refresh-typescript";
 import { resolvePathFromModule } from "../configFile";
@@ -18,12 +17,12 @@ type CommonParams = {
   entries: string[] | (() => string[]);
 };
 
-export const getCommonConfig = async ({ mode, PATHS, isHot, entries }: CommonParams) => {
+export const getCommonWebpackConfig = async ({ mode, PATHS, isHot, entries }: CommonParams) => {
   const isDev = mode === "development";
   const isProd = mode === "production";
   const isHMR = isHot && isDev;
 
-  const name = `${PATHS.staticPath}/js/${isProd ? "[name].[contenthash]" : "[name]"}.js`;
+  const name = `${PATHS.buildJsPath}/${isProd ? "[name].[contenthash]" : "[name]"}.js`;
 
   let hash: string = "";
 
@@ -100,7 +99,7 @@ export const getCommonConfig = async ({ mode, PATHS, isHot, entries }: CommonPar
         ],
       },
       plugins: [
-        new WebpackBar({ profile: false }),
+        new webpack.ProgressPlugin(),
         new RemovePlugin({
           // всегда очищает только перед первой сборкой
           before: {
@@ -131,7 +130,7 @@ export const getCommonConfig = async ({ mode, PATHS, isHot, entries }: CommonPar
         }),
         // удаление всех локализаций из момента кроме указанных
         new ContextReplacementPlugin(/moment[/\\]locale$/, /ru|en/),
-        isHMR && new ReactRefreshWebpackPlugin(),
+        isHMR && new ReactRefreshWebpackPlugin({ overlay: false }),
       ].filter(Boolean),
       devtool: isDev ? "cheap-module-source-map" : false,
       stats: "errors-only",
@@ -139,6 +138,6 @@ export const getCommonConfig = async ({ mode, PATHS, isHot, entries }: CommonPar
         ignored: "**/node_modules",
       },
     } as webpack.Configuration,
-    getStylesConfig(mode, PATHS),
+    getStylesWebpackConfig(mode, PATHS),
   ]);
 };

@@ -61,6 +61,8 @@ export const generatePaths = (args?: TGeneratePathsArgs) => {
     publicPath: "/",
 
     staticPath,
+    buildCssPath: `${staticPath}/css`,
+    buildJsPath: `${staticPath}/js`,
     imagePath: `${staticPath}/img`,
     fontsPath: `${staticPath}/fonts`,
     wasmPath: `${staticPath}/wasm`,

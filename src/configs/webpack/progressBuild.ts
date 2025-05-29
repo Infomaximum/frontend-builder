@@ -4,7 +4,7 @@ import { ProgressPlugin } from "webpack";
 import { renderFile } from "pug";
 import type { TPaths } from "../../paths";
 
-export const getProgressBuildConfig = (PATHS: TPaths) => {
+export const getProgressBuildWebpackConfig = (PATHS: TPaths) => {
   return {
     plugins: [
       new ProgressPlugin({
@@ -15,7 +15,7 @@ export const getProgressBuildConfig = (PATHS: TPaths) => {
               renderFile(path.resolve(PATHS.assetsPath, "progress.pug"), {
                 percentage: percentage * 100,
                 message,
-              })
+              }),
             );
           }
         },
