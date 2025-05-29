@@ -14,9 +14,11 @@
   ],
   "scripts": {
     "dev": "tsc",
-    "dev:w": "yarn dev -w",
+    "dev:w": "npm run dev -w",
     "build": "rimraf dist && yarn dev",
-    "release": "tsc --noEmit && standard-version && yarn build",
+    "release": "standard-version",
+    "release:rc": "standard-version -p",
+    "prepublishOnly": "npm run lint && npm run build",
     "lint": "tsc --noEmit",
     "test": "tsc --noEmit",
     "prettier": "prettier --find-config-path --write 'src/**/*'"
