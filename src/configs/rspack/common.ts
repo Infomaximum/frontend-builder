@@ -1,4 +1,5 @@
 import merge from "webpack-merge";
+import RemovePlugin from "remove-files-webpack-plugin";
 import type { TMode, TPaths } from "../../paths";
 import { getCurrentBranchOrTagName, getHashLastCommit, getVersionPackages } from "../../utils";
 import { resolvePathFromModule } from "../configFile";
@@ -101,7 +102,19 @@ export const getCommonRspackConfig = async ({ mode, PATHS, isHot, entries }: Com
           template:
             "[{elapsed}] {prefix:.bold} {bar:30.green/white.dim} ({percent}%) \n{wide_msg:.dim}",
         }),
-
+        new RemovePlugin({
+          // всегда очищает только перед первой сборкой
+          before: {
+            root: PATHS.appRelease,
+            include: ["./"],
+            allowRootAndOutside: true,
+          },
+          watch: {
+            root: PATHS.appRelease,
+            beforeForFirstBuild: true,
+            allowRootAndOutside: true,
+          },
+        }),
         new rspack.DefinePlugin({
           "process.env": {
             NODE_ENV: JSON.stringify(mode),
