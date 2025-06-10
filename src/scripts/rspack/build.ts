@@ -55,19 +55,22 @@ function build(config: RspackOptions) {
     if (err) {
       console.error(err.stack || err);
 
-      if (err?.details) {
+      if (err.details) {
         console.error(err.details);
       }
+
+      process.exit(1);
 
       return;
     }
 
-    stats &&
-      console.log(
-        stats?.toString({
-          chunks: false,
-          colors: true,
-        }),
-      );
+    if (stats && stats.hasErrors()) {
+      console.error(stats.toString({ colors: true }));
+      process.exit(1);
+    }
+
+    if (stats && stats.hasWarnings()) {
+      console.warn(stats.toString({ colors: true }));
+    }
   });
 }
