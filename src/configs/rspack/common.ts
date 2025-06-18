@@ -46,6 +46,7 @@ export const getCommonRspackConfig = async ({ mode, PATHS, isHot, entries }: Com
         publicPath: PATHS.publicPath,
         filename: name,
         chunkFilename: name,
+        assetModuleFilename: `${PATHS.staticPath}/assets/${isProd ? "[name].[contenthash]" : "[name]"}[ext]`,
         webassemblyModuleFilename: `${PATHS.wasmPath}/${Math.random()}.wasm`,
       },
       experiments: {
