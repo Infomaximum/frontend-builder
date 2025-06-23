@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.1.1](https://github.com/Infomaximum/frontend-builder/compare/v3.1.0...v3.1.1) (2025-06-23)
+
+
+### Bug Fixes
+
+* исправлен путь хранения assets в dev режиме ([1f64d94](https://github.com/Infomaximum/frontend-builder/commit/1f64d94e73266faad9ededba038f1e63f6067bdb))
+
 ## [3.1.0](https://github.com/Infomaximum/frontend-builder/compare/v3.0.3...v3.1.0) (2025-06-18)
 
 
