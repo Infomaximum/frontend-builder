@@ -49,7 +49,7 @@ export const getCommonWebpackConfig = async ({ mode, PATHS, isHot, entries }: Co
         filename: name,
         chunkFilename: name,
         hashFunction: "xxhash64", // ускорение пересборки https://github.com/webpack/webpack/issues/12102#issuecomment-938544497
-        assetModuleFilename: `${PATHS.staticPath}/assets/${isProd ? "[name].[contenthash]" : "[name]"}[ext]`,
+        assetModuleFilename: `${PATHS.staticPath}/assets/${isProd ? "[name].[contenthash][ext]" : "[id]"}`,
         webassemblyModuleFilename: `${PATHS.wasmPath}/${Math.random()}.wasm`,
       },
       experiments: {
