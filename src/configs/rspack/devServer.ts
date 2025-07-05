@@ -107,7 +107,10 @@ export const getDevServerRspackConfig = ({
       );
 
       if (typeof config?.devServer?.customMiddlewares === "function") {
-        const result = config.devServer.customMiddlewares(middlewares, devServer);
+        const result = config.devServer.customMiddlewares(
+          middlewares,
+          devServer,
+        ) as typeof middlewares;
 
         return result ? result : middlewares;
       }
