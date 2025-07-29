@@ -1,6 +1,5 @@
 import webpack from "webpack";
 import WebpackDevServer from "webpack-dev-server";
-import { choosePort } from "react-dev-utils/WebpackDevServerUtils";
 import { generatePaths, type TMode, type TPaths } from "../../paths";
 import { merge } from "webpack-merge";
 import { getDevServerWebpackConfig } from "../../configs/webpack/devServer";
@@ -37,20 +36,6 @@ export const runWebpackDevServer = async (
 };
 
 const run = async (PATHS: TPaths, options: TStartOptions, config: ImBuilderConfig | undefined) => {
-  const devServerHost = "0.0.0.0";
-
-  let port = config?.devServer?.defaultPort;
-
-  const defaultPort = config?.devServer?.defaultPort ?? 3000;
-
-  try {
-    port = (await choosePort(devServerHost, defaultPort)) ?? defaultPort;
-  } catch (e) {
-    console.error(chalk.red(e));
-
-    process.exit(1);
-  }
-
   const mode: TMode = "development";
 
   const isHot = options.hot;
@@ -75,9 +60,7 @@ const run = async (PATHS: TPaths, options: TStartOptions, config: ImBuilderConfi
     proxyHost: options.proxy_ip,
   };
 
-  const devServerConfig = getDevServerWebpackConfig({
-    port,
-    host: devServerHost,
+  const devServerConfig = await getDevServerWebpackConfig({
     writeToDisk: options.write,
     isHttps: options.https,
     hot: isHot,

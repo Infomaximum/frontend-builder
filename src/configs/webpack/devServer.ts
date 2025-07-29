@@ -2,6 +2,8 @@ import type WebpackDevServer from "webpack-dev-server";
 import monitor from "express-status-monitor";
 import webpack from "webpack";
 import type { ImBuilderConfig } from "../configFile";
+import { choosePort } from "react-dev-utils/WebpackDevServerUtils";
+import chalk from "chalk";
 
 type ProxyConfig = {
   proxyPort: string | undefined;
@@ -9,8 +11,6 @@ type ProxyConfig = {
 };
 
 type TDevServerConfigParams = {
-  port: number;
-  host: string;
   writeToDisk: boolean;
   isHttps: boolean;
   hot: boolean;
@@ -18,16 +18,28 @@ type TDevServerConfigParams = {
   config: ImBuilderConfig | undefined;
 };
 
-export const getDevServerWebpackConfig = ({
-  port,
-  host,
+export const getDevServerWebpackConfig = async ({
   proxy,
   writeToDisk,
   isHttps,
   hot,
   config,
-}: TDevServerConfigParams): WebpackDevServer.Configuration => {
+}: TDevServerConfigParams): Promise<WebpackDevServer.Configuration> => {
   const { proxyHost, proxyPort } = proxy;
+
+  const devServerHost = "0.0.0.0";
+
+  let port = config?.devServer?.defaultPort;
+
+  const defaultPort = config?.devServer?.defaultPort ?? 3000;
+
+  try {
+    port = (await choosePort(devServerHost, defaultPort)) ?? defaultPort;
+  } catch (e) {
+    console.error(chalk.red(e));
+
+    process.exit(1);
+  }
 
   const secure = isHttps ? "s" : "";
 
@@ -38,7 +50,7 @@ export const getDevServerWebpackConfig = ({
 
   return {
     port,
-    host,
+    host: devServerHost,
     compress: true,
     hot: !!hot,
     client: hot
