@@ -1,6 +1,8 @@
 import monitor from "express-status-monitor";
 import type { ImBuilderConfig } from "../configFile";
 import { rspack, type DevServer } from "@rspack/core";
+import { choosePort } from "react-dev-utils/WebpackDevServerUtils";
+import chalk from "chalk";
 
 type ProxyConfig = {
   proxyPort: string | undefined;
@@ -8,8 +10,6 @@ type ProxyConfig = {
 };
 
 type TDevServerConfigParams = {
-  port: number;
-  host: string;
   writeToDisk: boolean;
   isHttps: boolean;
   hot: boolean;
@@ -17,16 +17,28 @@ type TDevServerConfigParams = {
   config: ImBuilderConfig | undefined;
 };
 
-export const getDevServerRspackConfig = ({
-  port,
-  host,
+export const getDevServerRspackConfig = async ({
   proxy,
   writeToDisk,
   isHttps,
   hot,
   config,
-}: TDevServerConfigParams): DevServer => {
+}: TDevServerConfigParams): Promise<DevServer> => {
   const { proxyHost, proxyPort } = proxy;
+
+  const devServerHost = "0.0.0.0";
+
+  let port = config?.devServer?.defaultPort;
+
+  const defaultPort = config?.devServer?.defaultPort ?? 3000;
+
+  try {
+    port = (await choosePort(devServerHost, defaultPort)) ?? defaultPort;
+  } catch (e) {
+    console.error(chalk.red(e));
+
+    process.exit(1);
+  }
 
   const secure = isHttps ? "s" : "";
 
@@ -37,7 +49,7 @@ export const getDevServerRspackConfig = ({
 
   return {
     port,
-    host,
+    host: devServerHost,
     compress: true,
     hot: !!hot,
     client: hot

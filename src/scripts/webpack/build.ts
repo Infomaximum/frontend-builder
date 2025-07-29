@@ -13,6 +13,8 @@ import { getBundleAnalyzerConfig } from "../../configs/webpack/bundleAnalyzer";
 import { getProgressBuildWebpackConfig } from "../../configs/webpack/progressBuild";
 import { tsCheckerWebpackConfig } from "../../configs/webpack/tsChecker";
 import type { ImBuilderConfig } from "../../configs/configFile";
+import { getDefinePluginWebpackConfig } from "../../configs/webpack/definePlugin";
+import { compact } from "lodash";
 
 export const runWebpackBuild = async (args: TBuildOptions, config: ImBuilderConfig | undefined) => {
   const mode: TMode = "production";
@@ -23,14 +25,15 @@ export const runWebpackBuild = async (args: TBuildOptions, config: ImBuilderConf
 
   const entries = config?.entries ?? [PATHS.moduleIndex];
 
-  const configList = [
+  const configList = compact([
     await getCommonWebpackConfig({ mode, PATHS, entries }),
     getWebpackLoaders(mode, PATHS),
     getHTMLWebpackConfig({ mode, PATHS, pugFilePath: config?.pugFilePath }),
+    await getDefinePluginWebpackConfig({ mode, PATHS }),
     minimizerWebpackConfig,
     duplicateConfig,
-    tsCheckerWebpackConfig,
-  ] as webpack.Configuration[];
+    args.tsCheck && tsCheckerWebpackConfig,
+  ]) as webpack.Configuration[];
 
   args?.analyze && configList.push(getBundleAnalyzerConfig());
   // могут быть проблемы (шрифты, картинки и др.ресурсы не  копируются при повторном билде)

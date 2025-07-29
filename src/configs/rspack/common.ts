@@ -1,7 +1,6 @@
 import merge from "webpack-merge";
 import RemovePlugin from "remove-files-webpack-plugin";
 import type { TMode, TPaths } from "../../paths";
-import { getCurrentBranchOrTagName, getHashLastCommit, getVersionPackages } from "../../utils";
 import { resolvePathFromModule } from "../configFile";
 import { rspack, type RspackOptions, type SwcLoaderOptions } from "@rspack/core";
 import path from "path";
@@ -21,15 +20,6 @@ export const getCommonRspackConfig = async ({ mode, PATHS, isHot, entries }: Com
   const isHMR = !!(isHot && isDev);
 
   const name = `${PATHS.buildJsPath}/${isProd ? "[name].[contenthash]" : "[name]"}.js`;
-
-  let hash: string = "";
-
-  try {
-    hash = (await getHashLastCommit(PATHS)) || "";
-  } catch (error) {}
-
-  const versions = await getVersionPackages(PATHS);
-  const branchName = await getCurrentBranchOrTagName(PATHS);
 
   return merge([
     {
@@ -114,18 +104,6 @@ export const getCommonRspackConfig = async ({ mode, PATHS, isHot, entries }: Com
             root: PATHS.appRelease,
             beforeForFirstBuild: true,
             allowRootAndOutside: true,
-          },
-        }),
-        new rspack.DefinePlugin({
-          "process.env": {
-            NODE_ENV: JSON.stringify(mode),
-            LAST_COMMIT_HASH: JSON.stringify(hash),
-            BUILD_TIME: new Date().valueOf(),
-            DEBUG: isDev,
-            SHOW_BUILD_INFO: true,
-            BUILD_DIR: JSON.stringify(PATHS.appRelease),
-            VERSIONS: JSON.stringify(versions),
-            BRANCH: JSON.stringify(branchName),
           },
         }),
         new rspack.ProvidePlugin({

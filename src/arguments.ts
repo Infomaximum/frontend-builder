@@ -21,6 +21,8 @@ export type TStartOptions = {
   hot: boolean;
   cache: TWebpackCacheType;
   webpack: boolean;
+  manualMode: boolean;
+  tsCheck: boolean;
 };
 
 export type TBuildOptions = {
@@ -29,6 +31,7 @@ export type TBuildOptions = {
   watch: boolean;
   source_map: boolean;
   webpack: boolean;
+  tsCheck: boolean;
 };
 
 export type TProxyOptions = {
@@ -44,7 +47,7 @@ export const registerCommands = (cli: commander.Command) => {
   cli.name(packageJson.name);
   cli.version(packageJson.version, "-v, --version", "Текущая версия библиотеки");
 
-  const config = getConfigBuilderFromFile();
+  const configGetter = getConfigBuilderFromFile();
 
   cli
     .command("build")
@@ -57,8 +60,12 @@ export const registerCommands = (cli: commander.Command) => {
     .option("-w, --watch", "Отслеживает изменения и автоматически перезапускает сборку", false)
     .option("-s, --source_map", "Генерировать sourse map", false)
     .option("--webpack", "Сборка с использованием webpack", false)
+    .option("--no-ts-check", "Пропуск проверки кода тайпскриптом")
     .action((options: TBuildOptions) =>
-      (options.webpack ? runWebpackBuild : runRspackBuild)(options, config),
+      (options.webpack ? runWebpackBuild : runRspackBuild)(
+        options,
+        configGetter({ isManualModulesMode: false }),
+      ),
     );
 
   cli
@@ -73,13 +80,22 @@ export const registerCommands = (cli: commander.Command) => {
     .option("-w, --write", "Записывает выходные данные на диск вместо оперативной памяти", false)
     .option("--hot", "Включает режим HMR", false)
     .option("--webpack", "Разработка с использованием webpack", false)
+    .option(
+      "-m, --manual-mode",
+      "Включает ручной режим сборки: модули не собираются автоматически, пользователь должен явно указать, какие модули подключать и собирать",
+      false,
+    )
     .addOption(
       new Option("--cache <cache type>", "Используемый тип кеша webpack")
         .default("memory" satisfies TWebpackCacheType)
         .choices(["fs", "memory"] satisfies TWebpackCacheType[]),
     )
+    .option("--no-ts-check", "Пропуск проверки кода тайпскриптом")
     .action((options: TStartOptions) =>
-      (options.webpack ? runWebpackDevServer : runRspackDevServer)(options, config),
+      (options.webpack ? runWebpackDevServer : runRspackDevServer)(
+        options,
+        configGetter({ isManualModulesMode: options.manualMode }),
+      ),
     );
 
   cli
@@ -90,5 +106,7 @@ export const registerCommands = (cli: commander.Command) => {
     .option("-pp, --proxy_port <port>", "Порт для проксирования запросов")
     .option("-s, --https", "Проксирование на https/wss хост", false)
     .option("-d, --debug", "Отладка проксирования запросов", false)
-    .action((options: TProxyOptions) => runProxy(options, config));
+    .action((options: TProxyOptions) =>
+      runProxy(options, configGetter({ isManualModulesMode: false })),
+    );
 };

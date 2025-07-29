@@ -55,25 +55,34 @@ export type ImBuilderConfig = {
   devServer?: DevServerConfig;
 };
 
-export function getConfigBuilderFromFile(): ImBuilderConfig | undefined {
-  const config = rcFile<ImBuilderConfig>(BUILDER_CONFIG_FILE_NAME, {
+export type ImFuncBuilderConfig = (params: ImFuncBuilderConfigParams) => ImBuilderConfig;
+export type ImFuncBuilderConfigParams = {
+  isManualModulesMode: boolean;
+};
+
+export function getConfigBuilderFromFile(): (
+  params: ImFuncBuilderConfigParams,
+) => ImBuilderConfig | undefined {
+  const config = rcFile<ImBuilderConfig | ImFuncBuilderConfig>(BUILDER_CONFIG_FILE_NAME, {
     cwd: process.cwd(),
     packageJSON: false,
     configFileName: BUILDER_CONFIG_FILE_NAME,
     defaultExtension: BUILDER_CONFIG_FILE_EXT,
   })?.config;
 
-  let resultConfig = config;
+  return (params: ImFuncBuilderConfigParams) => {
+    let resultConfig = typeof config === "function" ? config(params) : config;
 
-  if (config?.extends) {
-    const { extends: _extends, ...rest } = config;
+    if (resultConfig?.extends) {
+      const { extends: _extends, ...rest } = resultConfig;
 
-    const baseConfig = loadConfig(_extends);
+      const baseConfig = loadConfig(_extends, new Set(), params);
 
-    resultConfig = deepMerge(baseConfig, rest) as ImBuilderConfig;
-  }
+      resultConfig = deepMerge(baseConfig, rest) as ImBuilderConfig;
+    }
 
-  return prepareConfigPaths(resultConfig);
+    return prepareConfigPaths(resultConfig);
+  };
 }
 
 function prepareConfigPaths(config: ImBuilderConfig | undefined): ImBuilderConfig | undefined {
@@ -92,7 +101,11 @@ function prepareConfigPaths(config: ImBuilderConfig | undefined): ImBuilderConfi
   return config;
 }
 
-function loadConfig(configPath: string, visited = new Set()): any {
+function loadConfig(
+  configPath: string,
+  visited = new Set(),
+  params: ImFuncBuilderConfigParams,
+): any {
   const resolvedPath = resolvePathFromModule(configPath);
 
   if (visited.has(resolvedPath)) {
@@ -101,12 +114,14 @@ function loadConfig(configPath: string, visited = new Set()): any {
 
   visited.add(resolvedPath);
 
-  const config = require(resolvedPath);
+  const _config = require(resolvedPath) as ImBuilderConfig | ImFuncBuilderConfig;
+
+  const config = typeof _config === "function" ? _config(params) : _config;
 
   if (config.extends) {
     const { extends: _extends, ...rest } = config;
 
-    const baseConfig = loadConfig(_extends, visited);
+    const baseConfig = loadConfig(_extends, visited, params);
 
     return deepMerge(baseConfig, rest);
   }

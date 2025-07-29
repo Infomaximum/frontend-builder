@@ -14,6 +14,8 @@ import { getBundleAnalyzerConfig } from "../../configs/webpack/bundleAnalyzer";
 import { circularDependencyDetector } from "../../configs/webpack/circularDep";
 import { getWebpackCacheConfig } from "../../configs/webpack/cache";
 import type { ImBuilderConfig } from "../../configs/configFile";
+import { getDefinePluginWebpackConfig } from "../../configs/webpack/definePlugin";
+import { compact } from "lodash";
 
 export const runWebpackDevServer = async (
   options: TStartOptions,
@@ -55,15 +57,16 @@ const run = async (PATHS: TPaths, options: TStartOptions, config: ImBuilderConfi
 
   const entries = config?.entries ?? [PATHS.moduleIndex];
 
-  const configWebpack = [
+  const configWebpack = compact([
     await getCommonWebpackConfig({ mode, PATHS, isHot, entries }),
     getWebpackCacheConfig(options.cache),
     getWebpackLoaders(mode, PATHS),
     getHTMLWebpackConfig({ mode, PATHS, pugFilePath: config?.pugFilePath }),
+    await getDefinePluginWebpackConfig({ mode, PATHS }),
     options.analyze ? getBundleAnalyzerConfig() : {},
-    tsCheckerWebpackConfig,
+    options.tsCheck && tsCheckerWebpackConfig,
     options.circular ? circularDependencyDetector : {},
-  ];
+  ]);
 
   const compiler = webpack(merge(configWebpack));
 

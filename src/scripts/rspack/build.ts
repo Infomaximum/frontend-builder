@@ -11,6 +11,8 @@ import chalk from "chalk";
 import printBuildError from "react-dev-utils/printBuildError";
 import { minimizerRspackConfig } from "../../configs/rspack/minimizer";
 import { tsCheckerRspackConfig } from "../../configs/rspack/tsChecker";
+import { getDefinePluginRspackConfig } from "../../configs/rspack/definePlugin";
+import { compact } from "lodash";
 
 export const runRspackBuild = async (args: TBuildOptions, config: ImBuilderConfig | undefined) => {
   const mode: TMode = "production";
@@ -21,13 +23,14 @@ export const runRspackBuild = async (args: TBuildOptions, config: ImBuilderConfi
 
   const entries = config?.entries ?? [PATHS.moduleIndex];
 
-  const configList = [
+  const configList = compact([
     await getCommonRspackConfig({ mode, PATHS, entries }),
     getRspackLoaders(mode, PATHS),
     getHTMLRspackConfig({ mode, PATHS, pugFilePath: config?.pugFilePath }),
+    await getDefinePluginRspackConfig({ mode, PATHS }),
     minimizerRspackConfig,
-    tsCheckerRspackConfig,
-  ] as RspackOptions[];
+    args.tsCheck && tsCheckerRspackConfig,
+  ]) as RspackOptions[];
 
   args?.analyze && configList.push(getRsDoctorRspackConfig(PATHS));
   // могут быть проблемы (шрифты, картинки и др.ресурсы не  копируются при повторном билде)

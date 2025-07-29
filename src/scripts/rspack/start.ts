@@ -2,7 +2,6 @@ import chalk from "chalk";
 import type { TStartOptions } from "../../arguments";
 import type { ImBuilderConfig } from "../../configs/configFile";
 import { generatePaths, type TMode, type TPaths } from "../../paths";
-import { choosePort } from "react-dev-utils/WebpackDevServerUtils";
 import { getCommonRspackConfig } from "../../configs/rspack/common";
 import { getHTMLRspackConfig } from "../../configs/rspack/htmlConfig";
 import { rspack, type RspackOptions } from "@rspack/core";
@@ -13,6 +12,8 @@ import merge from "webpack-merge";
 import { getDevServerRspackConfig } from "../../configs/rspack/devServer";
 import { RspackDevServer } from "@rspack/dev-server";
 import { getRsDoctorRspackConfig } from "../../configs/rspack/rsDoctor";
+import { getDefinePluginRspackConfig } from "../../configs/rspack/definePlugin";
+import { compact } from "lodash";
 
 export const runRspackDevServer = async (
   options: TStartOptions,
@@ -34,34 +35,21 @@ export const runRspackDevServer = async (
 };
 
 async function run(PATHS: TPaths, options: TStartOptions, config: ImBuilderConfig | undefined) {
-  const devServerHost = "0.0.0.0";
-
-  let port = config?.devServer?.defaultPort;
-
-  const defaultPort = config?.devServer?.defaultPort ?? 3000;
-
-  try {
-    port = (await choosePort(devServerHost, defaultPort)) ?? defaultPort;
-  } catch (e) {
-    console.error(chalk.red(e));
-
-    process.exit(1);
-  }
-
   const mode: TMode = "development";
 
   const isHot = options.hot;
 
   const entries = config?.entries ?? [PATHS.moduleIndex];
 
-  const configRspack = [
+  const configRspack = compact([
     await getCommonRspackConfig({ mode, PATHS, isHot, entries }),
     getRspackLoaders(mode, PATHS),
     getHTMLRspackConfig({ mode, PATHS, pugFilePath: config?.pugFilePath }),
-    tsCheckerRspackConfig,
+    await getDefinePluginRspackConfig({ mode, PATHS }),
+    options.tsCheck && tsCheckerRspackConfig,
     options.circular ? circularDependencyDetectorRspackConfig : {},
     options.analyze ? getRsDoctorRspackConfig(PATHS) : {},
-  ] satisfies RspackOptions[];
+  ]) satisfies RspackOptions[];
 
   const compiler = rspack(merge(configRspack));
 
@@ -70,9 +58,7 @@ async function run(PATHS: TPaths, options: TStartOptions, config: ImBuilderConfi
     proxyHost: options.proxy_ip,
   };
 
-  const devServerConfig = getDevServerRspackConfig({
-    port,
-    host: devServerHost,
+  const devServerConfig = await getDevServerRspackConfig({
     writeToDisk: options.write,
     isHttps: options.https,
     hot: isHot,
