@@ -41,8 +41,6 @@ export const getCommonRspackConfig = async ({ mode, PATHS, isHot, entries }: Com
       },
       experiments: {
         asyncWebAssembly: true,
-        lazyBarrel: true,
-        nativeWatcher: true,
       },
       resolve: {
         extensions: [".ts", ".tsx", ".js", ".jsx"],
