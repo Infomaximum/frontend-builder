@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.3.0](https://github.com/Infomaximum/frontend-builder/compare/v3.2.3...v3.3.0) (2025-11-11)
+
+
+### Features
+
+* добавлен флаг для создания zip архива ([02230ab](https://github.com/Infomaximum/frontend-builder/commit/02230ab2903a99082ed67a2d23f2e74f432b336f))
+
 ### [3.2.3](https://github.com/Infomaximum/frontend-builder/compare/v3.2.2...v3.2.3) (2025-09-03)
 
 
