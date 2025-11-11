@@ -32,6 +32,7 @@ export type TBuildOptions = {
   source_map: boolean;
   webpack: boolean;
   tsCheck: boolean;
+  zip: boolean;
 };
 
 export type TProxyOptions = {
@@ -61,6 +62,7 @@ export const registerCommands = (cli: commander.Command) => {
     .option("-s, --source_map", "Генерировать sourse map", false)
     .option("--webpack", "Сборка с использованием webpack", false)
     .option("--no-ts-check", "Пропуск проверки кода тайпскриптом")
+    .option("--zip", "Упаковать в архив", false)
     .action((options: TBuildOptions) =>
       (options.webpack ? runWebpackBuild : runRspackBuild)(
         options,

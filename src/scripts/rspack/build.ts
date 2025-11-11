@@ -13,6 +13,7 @@ import { minimizerRspackConfig } from "../../configs/rspack/minimizer";
 import { tsCheckerRspackConfig } from "../../configs/rspack/tsChecker";
 import { getDefinePluginRspackConfig } from "../../configs/rspack/definePlugin";
 import { compact } from "lodash";
+import { getZipPluginRspackConfig } from "../../configs/rspack/zip";
 
 export const runRspackBuild = async (args: TBuildOptions, config: ImBuilderConfig | undefined) => {
   const mode: TMode = "production";
@@ -30,6 +31,7 @@ export const runRspackBuild = async (args: TBuildOptions, config: ImBuilderConfi
     await getDefinePluginRspackConfig({ mode, PATHS }),
     minimizerRspackConfig,
     args.tsCheck && tsCheckerRspackConfig,
+    args.zip && getZipPluginRspackConfig({ PATHS }),
   ]) as RspackOptions[];
 
   args?.analyze && configList.push(getRsDoctorRspackConfig(PATHS));
