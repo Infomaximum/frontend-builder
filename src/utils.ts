@@ -89,3 +89,17 @@ export const getVersionPackages = async (PATHS: TPaths) => {
 
   return versions;
 };
+
+export const getZipBundleName = () => {
+  const now = new Date();
+
+  const pad = (num: number) => num.toString().padStart(2, "0");
+
+  const day = pad(now.getDate());
+  const month = pad(now.getMonth() + 1);
+  const year = pad(now.getFullYear());
+  const hours = pad(now.getHours());
+  const minutes = pad(now.getMinutes());
+
+  return `release_${day}-${month}-${year}_${hours}-${minutes}.zip`;
+};

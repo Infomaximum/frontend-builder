@@ -15,6 +15,7 @@ import { tsCheckerWebpackConfig } from "../../configs/webpack/tsChecker";
 import type { ImBuilderConfig } from "../../configs/configFile";
 import { getDefinePluginWebpackConfig } from "../../configs/webpack/definePlugin";
 import { compact } from "lodash";
+import { getZipPluginWebpackConfig } from "../../configs/webpack/zip";
 
 export const runWebpackBuild = async (args: TBuildOptions, config: ImBuilderConfig | undefined) => {
   const mode: TMode = "production";
@@ -33,6 +34,7 @@ export const runWebpackBuild = async (args: TBuildOptions, config: ImBuilderConf
     minimizerWebpackConfig,
     duplicateConfig,
     args.tsCheck && tsCheckerWebpackConfig,
+    args.zip && getZipPluginWebpackConfig({ PATHS }),
   ]) as webpack.Configuration[];
 
   args?.analyze && configList.push(getBundleAnalyzerConfig());
