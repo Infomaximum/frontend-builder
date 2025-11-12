@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.5.0](https://github.com/Infomaximum/frontend-builder/compare/v3.4.0...v3.5.0) (2025-11-12)
+
+
+### Features
+
+* добавлена возможность указать имя архива ([402e2bd](https://github.com/Infomaximum/frontend-builder/commit/402e2bdc9f7e63c2fa9818e1b3d1cfcd19380604))
+
 ## [3.4.0](https://github.com/Infomaximum/frontend-builder/compare/v3.3.0...v3.4.0) (2025-11-12)
 
 
