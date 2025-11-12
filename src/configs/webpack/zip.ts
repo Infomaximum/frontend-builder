@@ -5,16 +5,19 @@ import type { TPaths } from "../../paths";
 
 type ZipPluginWebpackConfigParams = {
   PATHS: TPaths;
+  name: string | boolean;
 };
 
-export const getZipPluginWebpackConfig = ({ PATHS }: ZipPluginWebpackConfigParams) => {
-  const name = getZipBundleName();
+export const getZipPluginWebpackConfig = ({ name, PATHS }: ZipPluginWebpackConfigParams) => {
+  const defaultName = getZipBundleName();
+
+  const archiveName = typeof name === "string" ? `${name}.zip` : defaultName;
 
   return {
     plugins: [
       new ZipPlugin({
         path: PATHS.appPath,
-        filename: name,
+        filename: archiveName,
       }),
     ],
   } as webpack.Configuration;

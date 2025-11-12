@@ -31,7 +31,7 @@ export const runRspackBuild = async (args: TBuildOptions, config: ImBuilderConfi
     await getDefinePluginRspackConfig({ mode, PATHS }),
     minimizerRspackConfig,
     args.tsCheck && tsCheckerRspackConfig,
-    args.zip && getZipPluginRspackConfig({ PATHS }),
+    args.zip && getZipPluginRspackConfig({ name: args.zip, PATHS }),
   ]) as RspackOptions[];
 
   args?.analyze && configList.push(getRsDoctorRspackConfig(PATHS));

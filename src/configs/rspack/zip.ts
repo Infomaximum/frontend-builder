@@ -5,12 +5,15 @@ import { getZipBundleName } from "../../utils";
 
 type ZipPluginRspackConfigParams = {
   PATHS: TPaths;
+  name: string | boolean;
 };
 
-export const getZipPluginRspackConfig = ({ PATHS }: ZipPluginRspackConfigParams) => {
-  const name = getZipBundleName();
+export const getZipPluginRspackConfig = ({ name, PATHS }: ZipPluginRspackConfigParams) => {
+  const defaultName = getZipBundleName();
+
+  const archiveName = typeof name === "string" ? `${name}.zip` : defaultName;
 
   return {
-    plugins: [new RspackZipPlugin({ destPath: path.join(PATHS.appPath, name) })],
+    plugins: [new RspackZipPlugin({ destPath: path.join(PATHS.appPath, archiveName) })],
   };
 };

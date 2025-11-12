@@ -34,7 +34,7 @@ export const runWebpackBuild = async (args: TBuildOptions, config: ImBuilderConf
     minimizerWebpackConfig,
     duplicateConfig,
     args.tsCheck && tsCheckerWebpackConfig,
-    args.zip && getZipPluginWebpackConfig({ PATHS }),
+    args.zip && getZipPluginWebpackConfig({ name: args.zip, PATHS }),
   ]) as webpack.Configuration[];
 
   args?.analyze && configList.push(getBundleAnalyzerConfig());
