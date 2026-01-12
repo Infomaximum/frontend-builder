@@ -7,7 +7,7 @@ export const getBabelConfig = (isDev: boolean, isHMR?: boolean) => {
       cacheDirectory: true,
       babelrc: false,
       configFile: false,
-      plugins: [ 
+      plugins: [
         isHMR && require.resolve("react-refresh/babel"),
         require.resolve("@babel/plugin-syntax-dynamic-import"),
         require.resolve("@babel/plugin-transform-runtime"),
