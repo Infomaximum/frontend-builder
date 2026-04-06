@@ -35,6 +35,7 @@ type DevServerConfig = {
    * Конфигурация проксирования
    */
   proxy?: ProxyConfig;
+  allowedHosts?: string | string[];
   customMiddlewares?: (middlewares: Middleware[], devServer: Server) => Middleware[];
 };
 

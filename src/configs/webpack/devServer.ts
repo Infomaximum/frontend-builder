@@ -87,6 +87,7 @@ export const getDevServerWebpackConfig = async ({
         changeOrigin: true,
       },
     ],
+    allowedHosts: config?.devServer?.allowedHosts,
     setupMiddlewares: (middlewares, devServer) => {
       if (!devServer) {
         throw new Error("webpack-dev-server is not defined");
