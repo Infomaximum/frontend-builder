@@ -64,6 +64,7 @@ const run = async (PATHS: TPaths, options: TStartOptions, config: ImBuilderConfi
     writeToDisk: options.write,
     isHttps: options.https,
     hot: isHot,
+    ...(options.port !== undefined ? { port: options.port } : {}),
     proxy,
     config,
   });
