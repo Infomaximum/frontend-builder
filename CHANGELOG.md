@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.7.0](https://github.com/Infomaximum/frontend-builder/compare/v3.5.5...v3.7.0) (2026-06-10)
+
+
+### Features
+
+* добавлен параметр -p/--port для команды start ([0ca6909](https://github.com/Infomaximum/frontend-builder/commit/0ca6909c93ff55c7b0bd876c0586802cae6f0497))
+* добавлен параметр allowedHosts для devserver ([4c0b584](https://github.com/Infomaximum/frontend-builder/commit/4c0b584c0b0b5874ebd2ecd09931c7422d6da0cd))
+
 ## [3.6.0](https://github.com/Infomaximum/frontend-builder/compare/v3.5.5...v3.6.0) (2026-04-06)
 
 
