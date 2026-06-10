@@ -14,6 +14,7 @@ type TDevServerConfigParams = {
   writeToDisk: boolean;
   isHttps: boolean;
   hot: boolean;
+  port?: string;
   proxy: ProxyConfig;
   config: ImBuilderConfig | undefined;
 };
@@ -23,15 +24,16 @@ export const getDevServerWebpackConfig = async ({
   writeToDisk,
   isHttps,
   hot,
+  port: cliPort,
   config,
 }: TDevServerConfigParams): Promise<WebpackDevServer.Configuration> => {
   const { proxyHost, proxyPort } = proxy;
 
   const devServerHost = "0.0.0.0";
 
-  let port = config?.devServer?.defaultPort;
+  const defaultPort = (cliPort ? parseInt(cliPort, 10) : undefined) ?? config?.devServer?.defaultPort ?? 3000;
 
-  const defaultPort = config?.devServer?.defaultPort ?? 3000;
+  let port: number | undefined = defaultPort;
 
   try {
     port = (await choosePort(devServerHost, defaultPort)) ?? defaultPort;
