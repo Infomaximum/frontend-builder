@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.7.2](https://github.com/Infomaximum/frontend-builder/compare/v3.7.1...v3.7.2) (2026-09-09)
+
+
+### Bug Fixes
+
+* обновлены версии lodash и @types/lodash до последних стабильных ([16d64d6](https://github.com/Infomaximum/frontend-builder/commit/16d64d6ceda245b67329e40f53ab4dbdfd5d442e))
+
 ### [3.7.1](https://github.com/Infomaximum/frontend-builder/compare/v3.7.0...v3.7.1) (2026-06-26)
 
 
