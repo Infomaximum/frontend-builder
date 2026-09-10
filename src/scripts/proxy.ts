@@ -5,12 +5,20 @@ import type { TProxyOptions } from "../arguments";
 import { generatePaths } from "../paths";
 import compression from "compression";
 import type { ImBuilderConfig } from "../configs/configFile";
+import { createProxyErrorHandler, resolveProxyTarget } from "../configs/proxy";
 
 export const runProxy = (options: TProxyOptions, config: ImBuilderConfig | undefined) => {
-  const { port, proxy_ip, https, proxy_port, debug } = options;
+  const { port, proxy_host, https, proxy_port, debug, secure } = options;
 
-  const secure = https ? "s" : "";
-  const target = `${secure}://${proxy_ip}${proxy_port ? `:${proxy_port}` : ""}`;
+  const target = resolveProxyTarget({
+    host: proxy_host,
+    port: proxy_port,
+    isHttps: https,
+    secure,
+    configProxy: config?.devServer?.proxy,
+  });
+
+  const onProxyError = createProxyErrorHandler(target);
 
   const app = express();
 
@@ -23,12 +31,13 @@ export const runProxy = (options: TProxyOptions, config: ImBuilderConfig | undef
     app.use(
       proxyPath,
       createProxyMiddleware({
-        target: `http${target}${proxyPath}`,
+        target: `${target.httpTarget}${proxyPath}`,
         changeOrigin: true,
         pathRewrite: {
           [`^${proxyPath}`]: "",
         },
-        secure: false,
+        secure: target.secure,
+        onError: onProxyError,
         onProxyReq: (proxyReq, req, res) => {
           debug && console.log(`[ProxyReq] ${req.method} ${req.originalUrl} -> ${proxyReq.path}`);
         },
@@ -46,11 +55,12 @@ export const runProxy = (options: TProxyOptions, config: ImBuilderConfig | undef
     app.use(
       proxyPath,
       createProxyMiddleware({
-        target: `ws${target}`,
+        target: target.wsTarget,
         ws: true,
         logLevel: "silent",
-        secure: false,
+        secure: target.secure,
         changeOrigin: true,
+        onError: onProxyError,
         onProxyReqWs: (proxyReq, req, res) => {
           debug && console.log(`[ProxyReqWS] ${req.method} ${req.originalUrl} -> ${proxyReq.path}`);
         },

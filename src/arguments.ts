@@ -14,11 +14,12 @@ export type TStartOptions = {
   analyze: boolean;
   port?: string;
   proxy_port: string | undefined;
-  proxy_ip: string | undefined;
+  proxy_host: string | undefined;
   entry_path?: string;
   circular: boolean;
   write: boolean;
   https: boolean;
+  secure: boolean | undefined;
   hot: boolean;
   cache: TWebpackCacheType;
   webpack: boolean;
@@ -39,8 +40,9 @@ export type TBuildOptions = {
 export type TProxyOptions = {
   port: string;
   proxy_port: string | undefined;
-  proxy_ip: string;
+  proxy_host: string | undefined;
   https: boolean;
+  secure: boolean | undefined;
   debug: boolean;
 };
 
@@ -75,9 +77,28 @@ export const registerCommands = (cli: commander.Command) => {
     .command("start")
     .description("Запускает проект в dev режиме")
     .option("-p, --port <port>", "Порт на котором будет запущен dev server")
-    .option("-ph, --proxy_ip <ip>", "IP для проксирования запросов")
+    .option(
+      "-ph, --proxy_host <host>",
+      "Хост для проксирования запросов, можно указать со схемой и портом: https://example.com:8091",
+    )
     .option("-pp, --proxy_port <port>", "Порт для проксирования запросов")
-    .option("-s, --https", "Проксирование на https/wss хост", false)
+    .option(
+      "-s, --https",
+      "Проксирование на https/wss хост, учитывается только если схема не указана в --proxy_host",
+      false,
+    )
+    .addOption(
+      new Option(
+        "--secure",
+        "Включает проверку SSL сертификата хоста, на который проксируются запросы",
+      ),
+    )
+    .addOption(
+      new Option(
+        "--no-secure",
+        "Отключает проверку SSL сертификата хоста, на который проксируются запросы",
+      ),
+    )
     .option("-a, --analyze", "Генерирует файл с размерами пакетов в бандле", false)
     .option("-e, --entry_path <path>", "Путь до входной точки приложения")
     .option("-c, --circular", "Включает отслеживание циклических зависимостей", false)
@@ -106,9 +127,28 @@ export const registerCommands = (cli: commander.Command) => {
     .command("proxy")
     .description("Запускает проксирование собранного проекта на указанный хост")
     .option("-p, --port <port>", "Порт на котором будет запущен сервер", "3000")
-    .option("-ph, --proxy_ip <ip>", "IP для проксирования запросов", "localhost")
+    .option(
+      "-ph, --proxy_host <host>",
+      "Хост для проксирования запросов, можно указать со схемой и портом: https://example.com:8091",
+    )
     .option("-pp, --proxy_port <port>", "Порт для проксирования запросов")
-    .option("-s, --https", "Проксирование на https/wss хост", false)
+    .option(
+      "-s, --https",
+      "Проксирование на https/wss хост, учитывается только если схема не указана в --proxy_host",
+      false,
+    )
+    .addOption(
+      new Option(
+        "--secure",
+        "Включает проверку SSL сертификата хоста, на который проксируются запросы",
+      ),
+    )
+    .addOption(
+      new Option(
+        "--no-secure",
+        "Отключает проверку SSL сертификата хоста, на который проксируются запросы",
+      ),
+    )
     .option("-d, --debug", "Отладка проксирования запросов", false)
     .action((options: TProxyOptions) =>
       runProxy(options, configGetter({ isManualModulesMode: false })),
