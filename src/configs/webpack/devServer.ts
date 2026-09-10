@@ -1,6 +1,7 @@
 import type WebpackDevServer from "webpack-dev-server";
 import monitor from "express-status-monitor";
 import webpack from "webpack";
+import { createProxyErrorHandler, resolveProxyTarget } from "../proxy";
 import type { ImBuilderConfig } from "../configFile";
 import { choosePort } from "react-dev-utils/WebpackDevServerUtils";
 import chalk from "chalk";
@@ -8,6 +9,7 @@ import chalk from "chalk";
 type ProxyConfig = {
   proxyPort: string | undefined;
   proxyHost: string | undefined;
+  secure: boolean | undefined;
 };
 
 type TDevServerConfigParams = {
@@ -27,11 +29,12 @@ export const getDevServerWebpackConfig = async ({
   port: cliPort,
   config,
 }: TDevServerConfigParams): Promise<WebpackDevServer.Configuration> => {
-  const { proxyHost, proxyPort } = proxy;
+  const { proxyHost, proxyPort, secure } = proxy;
 
   const devServerHost = "0.0.0.0";
 
-  const defaultPort = (cliPort ? parseInt(cliPort, 10) : undefined) ?? config?.devServer?.defaultPort ?? 3000;
+  const defaultPort =
+    (cliPort ? parseInt(cliPort, 10) : undefined) ?? config?.devServer?.defaultPort ?? 3000;
 
   let port: number | undefined = defaultPort;
 
@@ -43,12 +46,16 @@ export const getDevServerWebpackConfig = async ({
     process.exit(1);
   }
 
-  const secure = isHttps ? "s" : "";
+  const target = resolveProxyTarget({
+    host: proxyHost,
+    port: proxyPort,
+    isHttps,
+    secure,
+    configProxy: config?.devServer?.proxy,
+    defaultPort: 8091,
+  });
 
-  const ph = proxyHost ?? config?.devServer?.proxy?.host ?? "localhost";
-  const pp = proxyPort ?? config?.devServer?.proxy?.port ?? 8091;
-
-  const target = `${secure}://${ph}${`:${pp}`}`;
+  const onProxyError = createProxyErrorHandler(target);
 
   return {
     port,
@@ -76,17 +83,19 @@ export const getDevServerWebpackConfig = async ({
     proxy: [
       {
         context: config?.devServer?.proxy?.proxyHTTPPaths,
-        target: `http${target}`,
-        secure: !!secure,
+        target: target.httpTarget,
+        secure: target.secure,
         changeOrigin: true,
+        onError: onProxyError,
       },
       {
         context: config?.devServer?.proxy?.proxyWSPaths,
-        target: `ws${target}`,
+        target: target.wsTarget,
         ws: true,
         logLevel: "silent",
-        secure: !!secure,
+        secure: target.secure,
         changeOrigin: true,
+        onError: onProxyError,
       },
     ],
     allowedHosts: config?.devServer?.allowedHosts,
@@ -109,13 +118,13 @@ export const getDevServerWebpackConfig = async ({
             statusCodes: false,
           },
           healthChecks:
-            proxyPort && proxyHost
+            proxyHost && target.port !== undefined
               ? [
                   {
-                    protocol: `http${secure}`,
+                    protocol: `http${target.isHttps ? "s" : ""}`,
                     path: `/graphql?query={server{status}}`,
-                    host: proxyHost,
-                    port: proxyPort,
+                    host: target.host,
+                    port: target.port,
                   },
                 ]
               : undefined,

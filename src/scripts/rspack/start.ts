@@ -55,7 +55,8 @@ async function run(PATHS: TPaths, options: TStartOptions, config: ImBuilderConfi
 
   const proxy = {
     proxyPort: options.proxy_port,
-    proxyHost: options.proxy_ip,
+    proxyHost: options.proxy_host,
+    secure: options.secure,
   };
 
   const devServerConfig = await getDevServerRspackConfig({
