@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0](https://github.com/Infomaximum/frontend-builder/compare/v3.7.2...v4.0.0) (2026-09-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* - флаг --proxy_ip переименован в --proxy_host, короткий -ph не изменился
+- команда proxy проверяет сертификат хоста, раньше в ней было жестко
+  зашито secure: false. Для самоподписанных сертификатов теперь нужен
+  --no-secure или devServer.proxy.secure: false
+- команда proxy читает host и port из imbuilder.config, раньше брала
+  оттуда только proxyHTTPPaths и proxyWSPaths
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+
+### Features
+
+* адрес проксирования принимает схему, проверка сертификата вынесена в отдельную опцию ([f27d9e1](https://github.com/Infomaximum/frontend-builder/commit/f27d9e1d57f50b7f35d4bdba84409354d66731da))
+
 ### [3.7.2](https://github.com/Infomaximum/frontend-builder/compare/v3.7.1...v3.7.2) (2026-09-09)
 
 
