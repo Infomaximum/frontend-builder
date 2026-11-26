@@ -16,6 +16,8 @@ import type { ImBuilderConfig } from "../../configs/configFile";
 import { getDefinePluginWebpackConfig } from "../../configs/webpack/definePlugin";
 import { compact } from "lodash";
 import { getZipPluginWebpackConfig } from "../../configs/webpack/zip";
+import { getBuildInfoFileWebpackConfig } from "../../configs/webpack/buildInfoFile";
+import { getBuildInfo } from "../../utils";
 
 export const runWebpackBuild = async (args: TBuildOptions, config: ImBuilderConfig | undefined) => {
   const mode: TMode = "production";
@@ -25,15 +27,17 @@ export const runWebpackBuild = async (args: TBuildOptions, config: ImBuilderConf
   });
 
   const entries = config?.entries ?? [PATHS.moduleIndex];
+  const buildInfo = await getBuildInfo(PATHS);
 
   const configList = compact([
     await getCommonWebpackConfig({ mode, PATHS, entries }),
     getWebpackLoaders(mode, PATHS),
     getHTMLWebpackConfig({ mode, PATHS, pugFilePath: config?.pugFilePath }),
-    await getDefinePluginWebpackConfig({ mode, PATHS }),
+    await getDefinePluginWebpackConfig({ mode, PATHS, buildInfo }),
     minimizerWebpackConfig,
     duplicateConfig,
     args.tsCheck && tsCheckerWebpackConfig,
+    args.buildInfo && getBuildInfoFileWebpackConfig(buildInfo),
     args.zip && getZipPluginWebpackConfig({ name: args.zip, PATHS }),
   ]) as webpack.Configuration[];
 

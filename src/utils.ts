@@ -60,6 +60,64 @@ export const getCurrentBranchOrTagName = async (PATHS: TPaths) => {
   return branchName;
 };
 
+/** Тег выпуска: v и шесть цифр, например v260806 */
+const RELEASE_TAG_REGEXP = /^v(\d{6})$/;
+
+const parseReleaseVersion = (tag: string | undefined) =>
+  tag?.trim().match(RELEASE_TAG_REGEXP)?.[1] ?? null;
+
+/**
+ * Возвращает номер выпуска без "v", если сборка сделана точно с тега выпуска, иначе null.
+ * Тег берется из CI_COMMIT_TAG или из тегов, стоящих на HEAD. Из имени ветки номер не
+ * вычисляется: git name-rev называет коммит по ближайшему тегу после него
+ */
+export const getReleaseVersion = async (PATHS: TPaths) => {
+  const ciVersion = parseReleaseVersion(process.env.CI_COMMIT_TAG);
+
+  if (ciVersion) {
+    return ciVersion;
+  }
+
+  try {
+    const tags = await simpleGit(PATHS.appPath).raw("tag", "--points-at", "HEAD");
+
+    for (const tag of tags.split("\n")) {
+      const version = parseReleaseVersion(tag);
+
+      if (version) {
+        return version;
+      }
+    }
+  } catch (error) {}
+
+  return null;
+};
+
+export type TBuildInfo = {
+  /** Номер выпуска, если сборка сделана с тега выпуска, иначе null */
+  version: string | null;
+  /** Время сборки, мс эпохи */
+  build_time: number;
+  /** Первые 8 символов хеша коммита */
+  hash: string;
+  /** Ветка или тег по git name-rev */
+  branch: string;
+};
+
+/** Информация о сборке: общий источник для DefinePlugin и build-info.json */
+export const getBuildInfo = async (PATHS: TPaths): Promise<TBuildInfo> => {
+  let hash: string = "";
+
+  try {
+    hash = (await getHashLastCommit(PATHS)) || "";
+  } catch (error) {}
+
+  const branch = await getCurrentBranchOrTagName(PATHS);
+  const version = await getReleaseVersion(PATHS);
+
+  return { version, build_time: new Date().valueOf(), hash, branch };
+};
+
 /** Возвращает версии */
 export const getVersionPackages = async (PATHS: TPaths) => {
   const versions: Record<string, string> = {};

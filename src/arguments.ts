@@ -35,6 +35,7 @@ export type TBuildOptions = {
   webpack: boolean;
   tsCheck: boolean;
   zip: string | boolean;
+  buildInfo: boolean;
 };
 
 export type TProxyOptions = {
@@ -66,6 +67,7 @@ export const registerCommands = (cli: commander.Command) => {
     .option("--webpack", "Сборка с использованием webpack", false)
     .option("--no-ts-check", "Пропуск проверки кода тайпскриптом")
     .option("--zip [name]", "Упаковать в архив", false)
+    .option("--no-build-info", "Не создавать build-info.json с информацией о сборке")
     .action((options: TBuildOptions) =>
       (options.webpack ? runWebpackBuild : runRspackBuild)(
         options,
