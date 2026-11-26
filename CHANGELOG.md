@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.1.0](https://github.com/Infomaximum/frontend-builder/compare/v4.0.0...v4.1.0) (2026-11-26)
+
+
+### Features
+
+* сборка кладет build-info.json с информацией о сборке в корень артефакта ([0bc54ab](https://github.com/Infomaximum/frontend-builder/commit/0bc54ab92a44b6537898ac88182a8b01c97a6bb2))
+
 ## [4.0.0](https://github.com/Infomaximum/frontend-builder/compare/v3.7.2...v4.0.0) (2026-09-10)
 
 
